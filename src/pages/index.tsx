@@ -35,12 +35,14 @@ const HomePage: React.FC = () => {
           type="text"
           placeholder="Profile Name"
           title="Profile Name"
+          required
         />
         <Input
           name="anime"
           type="numeric"
           placeholder="Anime URL"
           title="Anime URL"
+          required
         />
         <button type="submit">Generate information</button>
         <textarea
