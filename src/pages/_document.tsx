@@ -49,7 +49,7 @@ export default class MyDocument extends NextDocument<CustomDocumentProps> {
           <meta name="theme-color" content="#ffffff" />
           <meta
             name="description"
-            content="Generate anime information to posts of AWC"
+            content="Generates anime information to post on AWC challenges"
           />
 
           <link rel="icon" href="favicon.svg" />

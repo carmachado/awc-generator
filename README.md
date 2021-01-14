@@ -6,7 +6,7 @@
 
 ## About
 
-Anime Watch Club Generator is a front-end application that generates challenge codes automatically from your Anilist anime username and URL.
+Anime Watching Club Generator is a front-end application that generates challenge codes automatically from your Anilist anime username and URL.
 
 Disclaimer: This app is completely unrelated with AWC or Anilist.
 

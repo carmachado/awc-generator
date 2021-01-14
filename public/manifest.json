@@ -1,7 +1,7 @@
 {
     "short_name": "AWC Genetator",
-    "name": "Anime Watch Club Anime Data Generator",
-    "description": "Generate anime information to posts of AWC",
+    "name": "Anime Watching Club Anime Data Generator",
+    "description": "Generates anime information to post on AWC challenges",
     "icons": [
       {
         "src": "/icon.png",
