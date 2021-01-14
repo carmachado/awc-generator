@@ -4,9 +4,7 @@
     ReactJS | Next.js
 </h1>
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-## Abount
+## About
 
 Anime Watch Club Generator is a front-end application that generates challenge codes automatically from your Anilist anime username and URL.
 
