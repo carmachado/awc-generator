@@ -1,0 +1,8 @@
+<svg width="600" height="600" xmlns="http://www.w3.org/2000/svg">
+  <ellipse ry="300" rx="300" id="svg_6" cy="300" cx="300" stroke-width="1.5" stroke="#000000" fill="#000000" />
+  <text transform="matrix(1,0,0,1,0,0) " font-style="normal" font-weight="900" xml:space="preserve" text-anchor="start"
+    font-family="'Calistoga'" font-size="200" id="svg_7" y="350" x="70" stroke-width="0" stroke="#000000"
+    fill="#ffffff">AWC</text>
+  <text xml:space="preserve" text-anchor="start" font-family="'Calistoga'" font-size="96" id="svg_8" y="400" x="130"
+    stroke-width="0" stroke="#000000" fill="#bbbbbb">generator</text>
+</svg>

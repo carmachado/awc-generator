@@ -1,0 +1,17 @@
+{
+    "short_name": "AWC Genetator",
+    "name": "Anime Watch Club Anime Data Generator",
+    "description": "Generate anime information to posts of AWC",
+    "icons": [
+      {
+        "src": "/icon.png",
+        "type": "image/svg",
+        "sizes": "512x512"
+      }
+    ],
+    "start_url": "/",
+    "background_color": "#090d13",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "#090d13"
+  }
