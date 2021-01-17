@@ -16,10 +16,11 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 import TextArea from "../components/TextArea";
 import { Challenge } from "../utils/animeDefinitions";
-import AppError from "../errors/ApError";
+import getNavigationInformation from "../utils/getNavigationInformation";
 
 interface Props {
   challenge: Challenge;
+  navigation: string[];
 }
 
 interface ChallangeInformation {
@@ -30,7 +31,10 @@ interface ChallangeInformation {
   }[];
 }
 
-const ChallengeComponent: React.FC<Props> = ({ challenge }: Props) => {
+const ChallengeComponent: React.FC<Props> = ({
+  challenge,
+  navigation,
+}: Props) => {
   const router = useRouter();
   const [animeData, setAnimeData] = useState("");
   const formRef = useRef(null);
@@ -77,7 +81,7 @@ const ChallengeComponent: React.FC<Props> = ({ challenge }: Props) => {
   const initialData = challangels && JSON.parse(challangels);
 
   return (
-    <Page>
+    <Page navigation={navigation}>
       <Container>
         <Title>
           {challenge.link ? (
@@ -144,19 +148,20 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 // This also gets called at build time
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  // params contains the post `id`.
-  // If the route is like /posts/1, then params.id is 1
+  const promisePage = getNavigationInformation();
 
-  const res = await fetch(
+  const promise = fetch(
     `https://raw.githubusercontent.com/carmachado/awc-generator-json/master/${params.challenge}.json`
   );
 
-  if (res.status === 404) throw new AppError(404);
+  const [res, dataPage] = await Promise.all([promise, promisePage]);
+
+  if (res.status === 404) return { notFound: true };
 
   const data = await res.json();
 
   return {
-    props: { challenge: data },
+    props: { challenge: data, navigation: dataPage },
     revalidate: 60,
   };
 };

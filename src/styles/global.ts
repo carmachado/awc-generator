@@ -17,16 +17,20 @@ export default createGlobalStyle`
     )};
     --color-white: #FFF;
     --color-background: #0d1117;
+    --color-background-nav: #161b22;
     --color-input-background: #090d13;
     --color-input-text: #c9d1d9;
     --color-input-border: #21262d;
     --color-input-placeholder: #8b949e;
     --color-primary: #FFF;
+
+    --color-background-nav-hover: #ddd;
   }
 
   .light-mode {
     --color-white: #FFF;
     --color-background: #FFF;
+    --color-background-nav: #24292e;
     --color-input-background: #f2f5f7;
     --color-input-text: #24292e;
     --color-input-border: trasparent;
@@ -39,12 +43,6 @@ export default createGlobalStyle`
     color: var(--color-primary);
     -webkit-font-smoothing: antialiased;
   }
-
-  #__next {
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 0;
-    }
 
   body, input, button, textarea {
     font: 16px "Nunito", sans-serif;
