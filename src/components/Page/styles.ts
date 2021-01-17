@@ -72,12 +72,11 @@ export const Navigation = styled.nav`
       font-size: 18px;
 
       &.active {
-        color: #fce204;
+        border-bottom: solid 2px var(--color-white);
       }
 
       &:hover {
         background-color: var(--color-background-nav-hover);
-        color: black;
       }
     }
 

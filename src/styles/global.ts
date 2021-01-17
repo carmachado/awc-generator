@@ -24,7 +24,7 @@ export default createGlobalStyle`
     --color-input-placeholder: #8b949e;
     --color-primary: #FFF;
 
-    --color-background-nav-hover: #ddd;
+    --color-background-nav-hover: #21262d;
   }
 
   .light-mode {
