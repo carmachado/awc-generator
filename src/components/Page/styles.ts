@@ -90,7 +90,6 @@ export const Navigation = styled.nav`
 
       &:hover {
         background-color: var(--color-background-nav-hover);
-        color: black;
       }
     }
 
