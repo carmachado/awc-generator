@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { Form } from "@unform/web";
+import { GetStaticProps } from "next";
 
 import { Container, Title } from "../styles/index";
 
@@ -11,8 +12,13 @@ import Page from "../components/Page";
 import Button from "../components/Button";
 import TextArea from "../components/TextArea";
 import { AnimeInformation } from "../utils/animeDefinitions";
+import getNavigationInformation from "../utils/getNavigationInformation";
 
-const HomePage: React.FC = () => {
+interface Props {
+  navigation: string[];
+}
+
+const HomePage: React.FC<Props> = ({ navigation }: Props) => {
   const [animeData, setAnimeData] = useState("");
 
   const handleSubmit = useCallback(async (formData: AnimeInformation) => {
@@ -23,7 +29,7 @@ const HomePage: React.FC = () => {
   const user = lsnext?.getItem("@awc-generator:username");
 
   return (
-    <Page>
+    <Page navigation={navigation}>
       <Container>
         <Form onSubmit={handleSubmit} initialData={{ user }}>
           <Title>
@@ -58,6 +64,17 @@ const HomePage: React.FC = () => {
       </Container>
     </Page>
   );
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+  const promisePage = getNavigationInformation();
+
+  const dataPage = await promisePage;
+
+  return {
+    props: { navigation: dataPage },
+    revalidate: 3600,
+  };
 };
 
 export default HomePage;

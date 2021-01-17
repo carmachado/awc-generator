@@ -3,9 +3,10 @@ import styled, { css } from "styled-components";
 export const Slider = styled.div<{ clicked: boolean }>`
   display: flex;
   align-items: center;
+  justify-items: center;
   align-self: flex-end;
-  margin: 8px;
   user-select: none;
+  height: 100%;
 
   label {
     display: inline-block;
