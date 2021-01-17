@@ -36,18 +36,18 @@ export default createGlobalStyle`
 
   body {
     background-color: var(--color-background);
-    color: var(--color-white);
+    color: var(--color-primary);
     -webkit-font-smoothing: antialiased;
   }
 
   #__next {
-        max-width: 960px;
+        max-width: 1000px;
         margin: 0 auto;
         padding: 0;
     }
 
   body, input, button, textarea {
-    font: 20px "Nunito", sans-serif;
+    font: 16px "Nunito", sans-serif;
   }
 
   h1, h2, h3, h4 {
@@ -69,5 +69,25 @@ export default createGlobalStyle`
 
   button {
     cursor: pointer;
+  }
+
+  .fallbackLoading {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    height: 100vh;
+  }
+
+  body::-webkit-scrollbar {
+  width: 1em;
+}
+
+  body::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+
+  body::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
   }
 `;

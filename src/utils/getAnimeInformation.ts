@@ -1,15 +1,11 @@
-import getMediaList from "../api/getMediaList";
-
-interface FuzzyDate {
-  year: number;
-  month: number;
-  day: number;
-}
-
-export interface AnimeInformation {
-  anime: string;
-  user: string;
-}
+import getMediaList, { MediaList } from "../api/getMediaList";
+import {
+  runAdditionInformation,
+  AnimeInformation,
+  FuzzyDate,
+  Requirement,
+  getAnimeID,
+} from "./animeDefinitions";
 
 function formatFuzzyDate({ year, month, day }: FuzzyDate): string {
   if (!year) return "YYYY-MM-DD";
@@ -21,26 +17,76 @@ function formatFuzzyDate({ year, month, day }: FuzzyDate): string {
   });
 }
 
-function getAnimeID(anime: string): { animeID: number; animeURL: string } {
-  try {
-    const animeURL = new URL(anime);
-    return {
-      animeID: Number.parseInt(animeURL.pathname.split("/")[2], 10),
-      animeURL: animeURL.toString(),
-    };
-  } catch (error) {
-    return {
-      animeID: Number.parseInt(anime, 10),
-      animeURL: `https://anilist.co/anime/${anime}`,
-    };
+const formatAdditionalInformation = async (
+  information: MediaList,
+  requirement?: Requirement,
+  fields?: string[]
+): Promise<string> => {
+  const promises = requirement.additionalInformation?.map(
+    async (inf, fieldIdx) => {
+      const value = fields && fields[fieldIdx];
+
+      return runAdditionInformation(inf.type, {
+        information,
+        field: { ...inf, value },
+      });
+    }
+  );
+  if (promises) {
+    const addInf = await Promise.all(promises);
+    return addInf.reduce((prev, curr) => `${prev} // ${curr}`);
   }
-}
+  return "";
+};
+
+const formatAnimeInformation = async (
+  information: MediaList,
+  requirement?: Requirement,
+  fields?: string[]
+): Promise<string> => {
+  const {
+    status,
+    startedAt,
+    completedAt,
+    media: {
+      id,
+      title: { romaji },
+    },
+  } = information;
+
+  let formattedAnime = `[${romaji}](https://anilist.co/anime/${id})\nStart: ${formatFuzzyDate(
+    startedAt
+  )} Finish: ${formatFuzzyDate(completedAt)}`;
+
+  if (requirement) {
+    const reqId = requirement.id.toLocaleString(undefined, {
+      minimumIntegerDigits: 2,
+    });
+
+    formattedAnime = `${reqId}) [${status === "COMPLETED" ? "X" : "O"}] __${
+      requirement.question
+    }__\n${formattedAnime}`;
+
+    const additionalInformation = await formatAdditionalInformation(
+      information,
+      requirement,
+      fields
+    );
+
+    if (additionalInformation) formattedAnime += ` // ${additionalInformation}`;
+  }
+
+  return formattedAnime;
+};
 
 const getAnimeInformation = async ({
   anime,
   user,
+  challenge,
+  requerementsIndex,
+  fields,
 }: AnimeInformation): Promise<string> => {
-  const { animeID, animeURL } = getAnimeID(anime);
+  const animeID = getAnimeID(anime);
 
   if (!animeID) {
     return "Not found.";
@@ -52,13 +98,12 @@ const getAnimeInformation = async ({
     if (information) {
       localStorage.setItem("@awc-generator:username", user);
 
-      return `[${
-        information.media.title.romaji
-      }](${animeURL})\nStart: ${formatFuzzyDate(
-        information.startedAt
-      )} Finish: ${formatFuzzyDate(information.completedAt)} // Ep: ${
-        information.progress
-      }/${information.media.episodes || "?"}`;
+      return await formatAnimeInformation(
+        information,
+        challenge &&
+          challenge.requirements.find((req) => req.id === requerementsIndex),
+        fields
+      );
     }
   } catch (error) {
     return error.message;

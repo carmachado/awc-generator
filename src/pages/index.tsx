@@ -1,15 +1,16 @@
 import React, { useState, useCallback } from "react";
-import { Input, Form } from "@rocketseat/unform";
-import { SiGithub } from "react-icons/si";
+import { Form } from "@unform/web";
 
-import ThemeSlider from "../components/ThemeSlider";
-
-import { Container, Title, Footer } from "../styles/index";
+import { Container, Title } from "../styles/index";
 
 import lsnext from "../utils/lsnext";
-import getAnimeInformation, {
-  AnimeInformation,
-} from "../utils/getAnimeInformation";
+import getAnimeInformation from "../utils/getAnimeInformation";
+
+import Input from "../components/Input";
+import Page from "../components/Page";
+import Button from "../components/Button";
+import TextArea from "../components/TextArea";
+import { AnimeInformation } from "../utils/animeDefinitions";
 
 const HomePage: React.FC = () => {
   const [animeData, setAnimeData] = useState("");
@@ -22,47 +23,40 @@ const HomePage: React.FC = () => {
   const user = lsnext?.getItem("@awc-generator:username");
 
   return (
-    <Container>
-      <ThemeSlider />
-      <Form onSubmit={handleSubmit} initialData={{ user }}>
-        <Title>
-          AWC
-          <br />
-          Generator
-        </Title>
-        <Input
-          name="user"
-          type="text"
-          placeholder="Profile Name"
-          title="Profile Name"
-          required
-        />
-        <Input
-          name="anime"
-          type="numeric"
-          placeholder="Anime URL"
-          title="Anime URL"
-          required
-        />
-        <button type="submit">Generate information</button>
-        <textarea
-          name="area"
-          id="result"
-          rows={5}
-          value={animeData}
-          readOnly
-          title="return of serach at anilist"
-        />
-      </Form>
-      <Footer>
-        <a
-          href="https://github.com/carmachado/awc-generator"
-          title="See Github Project"
-        >
-          <SiGithub />
-        </a>
-      </Footer>
-    </Container>
+    <Page>
+      <Container>
+        <Form onSubmit={handleSubmit} initialData={{ user }}>
+          <Title>
+            AWC
+            <br />
+            Generator
+          </Title>
+          <Input
+            name="user"
+            type="text"
+            placeholder="Profile Name"
+            title="Profile Name"
+            required
+          />
+          <Input
+            name="anime"
+            type="numeric"
+            placeholder="Anime URL"
+            title="Anime URL"
+            required
+          />
+          <Button type="submit">Generate information</Button>
+          <TextArea
+            name="area"
+            id="result"
+            rows={5}
+            value={animeData}
+            readOnly
+            title="return of serach at anilist"
+          />
+        </Form>
+      </Container>
+    </Page>
   );
 };
 

@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import api from "./client";
 
-interface MediaList {
+export interface MediaList {
   status: string;
   progress: number;
   startedAt: {
@@ -15,6 +15,9 @@ interface MediaList {
     day: number | null;
   };
   media: {
+    id: number;
+    season: string;
+    seasonYear: number;
     episodes: number | null;
     title: {
       romaji: string;
@@ -49,7 +52,10 @@ const GET_MEDIA_LIST = gql`
         day
       }
       media {
+        id
         episodes
+        season
+        seasonYear
         title {
           romaji
         }

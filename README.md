@@ -39,3 +39,7 @@ Disclaimer: This app is completely unrelated with AWC or Anilist.
    ```
 
 3. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+4. Adding a page
+
+   Do a pull request in [awc-generator-json](https://github.com/carmachado/awc-generator-json)
