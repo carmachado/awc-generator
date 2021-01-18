@@ -15,6 +15,7 @@ interface AdditionInformation {
 }
 
 export interface Requirement {
+  splitter?: string;
   id: number;
   question: string;
   additionalInformation: AdditionInformation[];
