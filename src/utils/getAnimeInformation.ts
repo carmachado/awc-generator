@@ -67,6 +67,9 @@ const formatAnimeInformation = async (
       requirement.question
     }__\n${formattedAnime}`;
 
+    if (requirement.splitter)
+      formattedAnime = `${requirement.splitter}\n${formattedAnime}`;
+
     const additionalInformation = await formatAdditionalInformation(
       information,
       requirement,
