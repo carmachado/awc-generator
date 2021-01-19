@@ -5,13 +5,13 @@ import { GetStaticProps } from "next";
 import { Container, Title } from "../styles/index";
 
 import lsnext from "../utils/lsnext";
-import getAnimeInformation from "../utils/getAnimeInformation";
+import getAnimeInformation from "../utils/anime/getAnimeInformation";
 
 import Input from "../components/Input";
 import Page from "../components/Page";
 import Button from "../components/Button";
 import TextArea from "../components/TextArea";
-import { AnimeInformation } from "../utils/animeDefinitions";
+import { AnimeInformation } from "../utils/anime/animeDefinitions";
 import getNavigationInformation from "../utils/getNavigationInformation";
 
 interface Props {

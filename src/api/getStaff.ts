@@ -15,7 +15,7 @@ interface StaffVars {
   id: number;
 }
 
-const GET_MEDIA_LIST = gql`
+const GET_STAFF_LIST = gql`
   query($id: Int) {
     Staff(id: $id) {
       name {
@@ -27,7 +27,7 @@ const GET_MEDIA_LIST = gql`
 
 const getStaff = async ({ id }: StaffVars): Promise<Staff> => {
   const result = await api.query<StaffData, StaffVars>({
-    query: GET_MEDIA_LIST,
+    query: GET_STAFF_LIST,
     variables: { id },
   });
 
