@@ -9,13 +9,13 @@ import ReactLoading from "react-loading";
 import { Container, Title } from "../styles/[challenge]";
 
 import lsnext from "../utils/lsnext";
-import getAnimeInformation from "../utils/getAnimeInformation";
+import getAnimeInformation from "../utils/anime/getAnimeInformation";
 
 import Page from "../components/Page";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import TextArea from "../components/TextArea";
-import { Challenge } from "../utils/animeDefinitions";
+import { Challenge } from "../utils/anime/animeDefinitions";
 import getNavigationInformation from "../utils/getNavigationInformation";
 
 interface Props {

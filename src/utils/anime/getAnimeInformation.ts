@@ -1,11 +1,11 @@
-import getMediaList, { MediaList } from "../api/getMediaList";
+import getMediaList, { MediaList } from "../../api/getMediaList";
 import {
-  runAdditionInformation,
   AnimeInformation,
   FuzzyDate,
   Requirement,
   getAnimeID,
 } from "./animeDefinitions";
+import { runAdditionalInformation } from "./additionalInformation/runAdditionalInformation";
 
 function formatFuzzyDate({ year, month, day }: FuzzyDate): string {
   if (!year) return "YYYY-MM-DD";
@@ -18,7 +18,7 @@ function formatFuzzyDate({ year, month, day }: FuzzyDate): string {
 }
 
 const formatAdditionalInformation = async (
-  information: MediaList,
+  info: MediaList,
   requirement?: Requirement,
   fields?: string[]
 ): Promise<string> => {
@@ -26,8 +26,8 @@ const formatAdditionalInformation = async (
     async (inf, fieldIdx) => {
       const value = fields && fields[fieldIdx];
 
-      return runAdditionInformation(inf.type, {
-        information,
+      return runAdditionalInformation(inf.type, inf.subtype, {
+        info,
         field: { ...inf, value },
       });
     }
