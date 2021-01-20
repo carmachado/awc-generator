@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useRef, useState, useEffect } from "react";
 
 import { Form } from "@unform/web";
 import { Scope } from "@unform/core";
@@ -38,6 +38,7 @@ const ChallengeComponent: React.FC<Props> = ({
   const router = useRouter();
   const [animeData, setAnimeData] = useState("");
   const formRef = useRef(null);
+  const [initialData, setInitialData] = useState(null);
 
   const handleSubmit = useCallback(
     async (formData: ChallangeInformation) => {
@@ -66,6 +67,16 @@ const ChallengeComponent: React.FC<Props> = ({
     [challenge]
   );
 
+  useEffect(() => {
+    const user = lsnext?.getItem("@awc-generator:username");
+
+    const challengels = lsnext?.getItem(`@awc-generator:${challenge.name}`);
+
+    const data = challengels && JSON.parse(challengels);
+
+    setInitialData({ ...data, user });
+  }, [challenge]);
+
   if (router.isFallback) {
     return (
       <div className="fallbackLoading">
@@ -73,12 +84,6 @@ const ChallengeComponent: React.FC<Props> = ({
       </div>
     );
   }
-
-  const user = lsnext?.getItem("@awc-generator:username");
-
-  const challangels = lsnext?.getItem(`@awc-generator:${challenge.name}`);
-
-  const initialData = challangels && JSON.parse(challangels);
 
   return (
     <Page navigation={navigation}>
@@ -90,11 +95,7 @@ const ChallengeComponent: React.FC<Props> = ({
             challenge.name
           )}
         </Title>
-        <Form
-          ref={formRef}
-          onSubmit={handleSubmit}
-          initialData={{ ...initialData, user }}
-        >
+        <Form ref={formRef} onSubmit={handleSubmit} initialData={initialData}>
           <Input
             name="user"
             type="text"
@@ -103,9 +104,8 @@ const ChallengeComponent: React.FC<Props> = ({
             required
           />
           {challenge.requirements?.map((req) => (
-            <Scope path={`animes[${req.id}]`}>
+            <Scope key={req.id} path={`animes[${req.id}]`}>
               <Input
-                key={req.id}
                 name="URL"
                 label={`${req.id}) ${req.question}`}
                 placeholder="Anime URL"
