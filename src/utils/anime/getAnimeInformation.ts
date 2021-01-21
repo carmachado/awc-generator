@@ -24,7 +24,7 @@ const formatAdditionalInformation = async (
 ): Promise<string> => {
   const promises = requirement.additionalInformation?.map(
     async (inf, fieldIdx) => {
-      const value = fields && fields[fieldIdx];
+      const value = fields && fields[fieldIdx].trim();
 
       return runAdditionalInformation(inf.type, inf.subtype, {
         info,

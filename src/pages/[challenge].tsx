@@ -60,7 +60,7 @@ const ChallengeComponent: React.FC<Props> = ({
 
       setAnimeData(`<hr>\n\n${result.join("\n\n").trim()}\n\n<hr>`);
     },
-    [challenge, router]
+    [challenge]
   );
 
   useEffect(() => {
