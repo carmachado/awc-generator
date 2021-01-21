@@ -39,6 +39,7 @@ const ChallengeComponent: React.FC<Props> = ({
   const handleSubmit = useCallback(
     async (formData: ChallengeInformation) => {
       const { user } = formData;
+
       setItemLocalStorage(
         `@awc-generator:${challenge.name}`,
         JSON.stringify(formData)
@@ -55,11 +56,11 @@ const ChallengeComponent: React.FC<Props> = ({
         });
       });
 
-      const animeInformation = await Promise.all(promises);
+      const result = await Promise.all(promises);
 
-      setAnimeData(`<hr>\n\n${animeInformation.join("\n\n").trim()}\n\n<hr>`);
+      setAnimeData(`<hr>\n\n${result.join("\n\n").trim()}\n\n<hr>`);
     },
-    [challenge]
+    [challenge, router]
   );
 
   useEffect(() => {
