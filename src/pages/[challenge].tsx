@@ -8,27 +8,22 @@ import ReactLoading from "react-loading";
 
 import { Container, Title } from "../styles/[challenge]";
 
-import lsnext from "../utils/lsnext";
-import getAnimeInformation from "../utils/anime/getAnimeInformation";
+import { setItemLocalStorage, getItemLocalStorage } from "../utils/lsnext";
 
 import Page from "../components/Page";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import TextArea from "../components/TextArea";
-import { Challenge } from "../utils/anime/animeDefinitions";
-import getNavigationInformation from "../utils/getNavigationInformation";
+import { Challenge, ChallengeInformation } from "../utils/anime/animeTypes";
+import {
+  getChallengeInformation,
+  getNavigationInformation,
+} from "../utils/getStaticInformation";
+import getAnimeInformation from "../utils/anime/getAnimeInformation";
 
 interface Props {
   challenge: Challenge;
   navigation: string[];
-}
-
-interface ChallangeInformation {
-  user: string;
-  animes: {
-    URL: string;
-    fields: string[];
-  }[];
 }
 
 const ChallengeComponent: React.FC<Props> = ({
@@ -41,36 +36,36 @@ const ChallengeComponent: React.FC<Props> = ({
   const [initialData, setInitialData] = useState(null);
 
   const handleSubmit = useCallback(
-    async (formData: ChallangeInformation) => {
+    async (formData: ChallengeInformation) => {
       const { user } = formData;
-      lsnext?.setItem(
+
+      setItemLocalStorage(
         `@awc-generator:${challenge.name}`,
         JSON.stringify(formData)
       );
+      setItemLocalStorage("@awc-generator:username", user);
 
-      const promises = formData.animes.map(
-        ({ URL, fields }, requerementsIndex) => {
-          return getAnimeInformation({
-            anime: URL,
-            user,
-            challenge,
-            requerementsIndex,
-            fields,
-          });
-        }
-      );
+      const promises = formData.animes.map(({ URL, fields }, requerementId) => {
+        return getAnimeInformation({
+          anime: URL,
+          user,
+          challenge,
+          requerementId,
+          fields,
+        });
+      });
 
-      const animeInformation = await Promise.all(promises);
+      const result = await Promise.all(promises);
 
-      setAnimeData(`<hr>\n\n${animeInformation.join("\n\n").trim()}\n\n<hr>`);
+      setAnimeData(`<hr>\n\n${result.join("\n\n").trim()}\n\n<hr>`);
     },
     [challenge]
   );
 
   useEffect(() => {
-    const user = lsnext?.getItem("@awc-generator:username");
+    const user = getItemLocalStorage("@awc-generator:username");
 
-    const challengels = lsnext?.getItem(`@awc-generator:${challenge.name}`);
+    const challengels = getItemLocalStorage(`@awc-generator:${challenge.name}`);
 
     const data = challengels && JSON.parse(challengels);
 
@@ -148,20 +143,18 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 // This also gets called at build time
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const promisePage = getNavigationInformation();
+  const promiseNavigation = getNavigationInformation();
+  const promiseChallenge = getChallengeInformation(params.challenge as string);
 
-  const promise = fetch(
-    `https://raw.githubusercontent.com/carmachado/awc-generator-json/master/${params.challenge}.json`
-  );
+  const [dataChallenge, dataNavigation] = await Promise.all([
+    promiseChallenge,
+    promiseNavigation,
+  ]);
 
-  const [res, dataPage] = await Promise.all([promise, promisePage]);
-
-  if (res.status === 404) return { notFound: true };
-
-  const data = await res.json();
+  if (!dataChallenge) return { notFound: true };
 
   return {
-    props: { challenge: data, navigation: dataPage },
+    props: { challenge: dataChallenge, navigation: dataNavigation },
     revalidate: 60,
   };
 };

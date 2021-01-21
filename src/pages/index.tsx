@@ -4,15 +4,15 @@ import { GetStaticProps } from "next";
 
 import { Container, Title } from "../styles/index";
 
-import lsnext from "../utils/lsnext";
-import getAnimeInformation from "../utils/anime/getAnimeInformation";
+import { setItemLocalStorage, getItemLocalStorage } from "../utils/lsnext";
 
 import Input from "../components/Input";
 import Page from "../components/Page";
 import Button from "../components/Button";
 import TextArea from "../components/TextArea";
-import { AnimeInformation } from "../utils/anime/animeDefinitions";
-import getNavigationInformation from "../utils/getNavigationInformation";
+import { AnimeInformation } from "../utils/anime/animeTypes";
+import { getNavigationInformation } from "../utils/getStaticInformation";
+import getAnimeInformation from "../utils/anime/getAnimeInformation";
 
 interface Props {
   navigation: string[];
@@ -22,11 +22,13 @@ const HomePage: React.FC<Props> = ({ navigation }: Props) => {
   const [animeData, setAnimeData] = useState("");
 
   const handleSubmit = useCallback(async (formData: AnimeInformation) => {
+    setItemLocalStorage("@awc-generator:username", formData.user);
+
     const animeInformation = await getAnimeInformation(formData);
     setAnimeData(animeInformation);
   }, []);
 
-  const user = lsnext?.getItem("@awc-generator:username");
+  const user = getItemLocalStorage("@awc-generator:username");
 
   return (
     <Page navigation={navigation}>
@@ -73,7 +75,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: { navigation: dataPage },
-    revalidate: 3600,
+    revalidate: 60,
   };
 };
 

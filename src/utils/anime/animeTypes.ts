@@ -28,11 +28,21 @@ export interface Challenge {
   requirements: Requirement[];
 }
 
+export interface ChallengeInformation {
+  name: string;
+  user: string;
+  animes: {
+    requerementId: number;
+    URL: string;
+    fields: string[];
+  }[];
+}
+
 export interface AnimeInformation {
   anime: string;
   user: string;
   challenge?: Challenge;
-  requerementsIndex?: number;
+  requerementId?: number;
   fields?: string[];
 }
 export function getAnimeID(anime: string): number {
