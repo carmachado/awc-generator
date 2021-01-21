@@ -32,7 +32,7 @@ export interface AnimeInformation {
   anime: string;
   user: string;
   challenge?: Challenge;
-  requerementsIndex?: number;
+  requerementId?: number;
   fields?: string[];
 }
 export function getAnimeID(anime: string): number {

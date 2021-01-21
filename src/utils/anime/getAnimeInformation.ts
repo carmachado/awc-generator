@@ -86,7 +86,7 @@ const getAnimeInformation = async ({
   anime,
   user,
   challenge,
-  requerementsIndex,
+  requerementId,
   fields,
 }: AnimeInformation): Promise<string> => {
   const animeID = getAnimeID(anime);
@@ -99,12 +99,10 @@ const getAnimeInformation = async ({
     const information = await getMediaList({ id: animeID, userName: user });
 
     if (information) {
-      localStorage.setItem("@awc-generator:username", user);
-
       return await formatAnimeInformation(
         information,
         challenge &&
-          challenge.requirements.find((req) => req.id === requerementsIndex),
+          challenge.requirements.find((req) => req.id === requerementId),
         fields
       );
     }
