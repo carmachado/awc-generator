@@ -10,7 +10,7 @@ import Input from "../components/Input";
 import Page from "../components/Page";
 import Button from "../components/Button";
 import TextArea from "../components/TextArea";
-import { AnimeInformation } from "../utils/anime/animeDefinitions";
+import { AnimeInformation } from "../utils/anime/animeTypes";
 import { getNavigationInformation } from "../utils/getStaticInformation";
 import getAnimeInformation from "../utils/anime/getAnimeInformation";
 

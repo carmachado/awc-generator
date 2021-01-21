@@ -1,4 +1,4 @@
-import { AIParams, AIFunction } from "../animeDefinitions";
+import { AIParams, AIFunction } from "../animeTypes";
 import Link from "./Link";
 import Label from "./Label";
 

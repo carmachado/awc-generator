@@ -1,4 +1,4 @@
-import { AIFunction, AIParams } from "../animeDefinitions";
+import { AIFunction, AIParams } from "../animeTypes";
 
 const Label: AIFunction = async ({ field }: AIParams): Promise<string> => {
   return `${field.field}: ${field.value}`;

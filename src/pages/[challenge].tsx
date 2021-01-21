@@ -14,12 +14,11 @@ import Page from "../components/Page";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import TextArea from "../components/TextArea";
-import { Challenge } from "../utils/anime/animeDefinitions";
+import { Challenge, ChallengeInformation } from "../utils/anime/animeTypes";
 import {
   getChallengeInformation,
   getNavigationInformation,
 } from "../utils/getStaticInformation";
-import ChallengeInformation from "../utils/anime/ChallengeInformation";
 import getAnimeInformation from "../utils/anime/getAnimeInformation";
 
 interface Props {
@@ -144,18 +143,18 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 // This also gets called at build time
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const promisePage = getNavigationInformation();
+  const promiseNavigation = getNavigationInformation();
   const promiseChallenge = getChallengeInformation(params.challenge as string);
 
-  const [resChallenge, dataPage] = await Promise.all([
+  const [dataChallenge, dataNavigation] = await Promise.all([
     promiseChallenge,
-    promisePage,
+    promiseNavigation,
   ]);
 
-  if (!resChallenge) return { notFound: true };
+  if (!dataChallenge) return { notFound: true };
 
   return {
-    props: { challenge: resChallenge, navigation: dataPage },
+    props: { challenge: dataChallenge, navigation: dataNavigation },
     revalidate: 60,
   };
 };

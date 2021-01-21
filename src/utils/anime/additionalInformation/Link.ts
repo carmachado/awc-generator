@@ -1,7 +1,7 @@
 import getMedia from "../../../api/getMedia";
 import getStaff from "../../../api/getStaff";
 import getThreadComments from "../../../api/getThreadComment";
-import { AIParams, getAnimeID, AIFunction } from "../animeDefinitions";
+import { AIParams, getAnimeID, AIFunction } from "../animeTypes";
 
 const Link: AIFunction = async ({ field }: AIParams): Promise<string> => {
   return `[${field.field}](${field.value})`;

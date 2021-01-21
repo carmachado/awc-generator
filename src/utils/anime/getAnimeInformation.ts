@@ -4,7 +4,7 @@ import {
   FuzzyDate,
   Requirement,
   getAnimeID,
-} from "./animeDefinitions";
+} from "./animeTypes";
 import { runAdditionalInformation } from "./additionalInformation/runAdditionalInformation";
 
 function formatFuzzyDate({ year, month, day }: FuzzyDate): string {
