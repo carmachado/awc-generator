@@ -6,9 +6,12 @@ import {
   getAnimeID,
 } from "./animeTypes";
 import { runAdditionalInformation } from "./additionalInformation/runAdditionalInformation";
+import getMedia from "../../api/getMedia";
 
-function formatFuzzyDate({ year, month, day }: FuzzyDate): string {
-  if (!year) return "YYYY-MM-DD";
+function formatFuzzyDate(date: FuzzyDate): string {
+  if (!date || !date.year) return "YYYY-MM-DD";
+
+  const { year, month, day } = date;
 
   return new Date(year, month, day).toLocaleDateString("fr-CA", {
     year: "numeric",
@@ -95,8 +98,14 @@ const getAnimeInformation = async ({
     return "Not found.";
   }
 
+  let information: MediaList;
   try {
-    const information = await getMediaList({ id: animeID, userName: user });
+    try {
+      information = await getMediaList({ id: animeID, userName: user });
+    } catch (error) {
+      const media = await getMedia({ id: animeID });
+      information = { media };
+    }
 
     if (information) {
       return await formatAnimeInformation(

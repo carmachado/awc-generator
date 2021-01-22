@@ -1,3 +1,4 @@
+import getCharacter from "../../../api/getCharacter";
 import getMedia from "../../../api/getMedia";
 import getStaff from "../../../api/getStaff";
 import getThreadComments from "../../../api/getThreadComment";
@@ -10,6 +11,12 @@ const Link: AIFunction = async ({ field }: AIParams): Promise<string> => {
 const Staff: AIFunction = async ({ field }: AIParams): Promise<string> => {
   const id = getAnimeID(field.value);
   const { name } = await getStaff({ id });
+  return `${field.field}: [${name.full}](https://anilist.co/staff/${id})`;
+};
+
+const Character: AIFunction = async ({ field }: AIParams): Promise<string> => {
+  const id = getAnimeID(field.value);
+  const { name } = await getCharacter({ id });
   return `${field.field}: [${name.full}](https://anilist.co/staff/${id})`;
 };
 
@@ -42,4 +49,5 @@ export default {
   Staff,
   Anime,
   CommentUser,
+  Character,
 };
