@@ -3,14 +3,14 @@ import api from "./client";
 import { Media } from "./getMedia";
 
 export interface MediaList {
-  status: string;
-  progress: number;
-  startedAt: {
+  status?: string;
+  progress?: number;
+  startedAt?: {
     year: number | null;
     month: number | null;
     day: number | null;
   };
-  completedAt: {
+  completedAt?: {
     year: number | null;
     month: number | null;
     day: number | null;
