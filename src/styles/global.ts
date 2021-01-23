@@ -88,4 +88,8 @@ export default createGlobalStyle`
     background-color: darkgrey;
     outline: 1px solid slategrey;
   }
+
+  *:focus  {
+    border: solid 1px var(--color-primary);
+  }
 `;

@@ -10,6 +10,7 @@ const ThemeSlider: React.FC = () => {
 
   return (
     <Slider clicked={clicked}>
+      <HiSun className="sun" />
       <label htmlFor="changeThemeInput">
         <input
           id="changeThemeInput"
@@ -21,11 +22,9 @@ const ThemeSlider: React.FC = () => {
             darkMode.toggle();
           }}
         />
-        <div>
-          <HiMoon className="moon" />
-          <HiSun className="sun" />
-        </div>
+        <div />
       </label>
+      <HiMoon className="moon" />
     </Slider>
   );
 };

@@ -118,3 +118,16 @@ export const Navigation = styled.nav`
     }
   }
 `;
+
+export const NavRight = styled.div`
+  display: flex;
+  align-items: center;
+  a {
+    display: flex;
+    align-items: center;
+    svg {
+      margin: 0 8px;
+      color: var(--color-white);
+    }
+  }
+`;

@@ -10,8 +10,9 @@ export const Slider = styled.div<{ clicked: boolean }>`
 
   label {
     display: inline-block;
-    width: 60px;
-    height: 34px;
+    width: 30px;
+    height: 7px;
+    margin: 5px;
     position: relative;
 
     input {
@@ -19,8 +20,8 @@ export const Slider = styled.div<{ clicked: boolean }>`
     }
 
     div {
-      background-color: var(--color-input-background);
-      border: solid 1px var(--color-primary);
+      background-color: var(--color-white);
+      border: solid 1px var(--color-white);
 
       cursor: pointer;
 
@@ -30,28 +31,22 @@ export const Slider = styled.div<{ clicked: boolean }>`
       right: 0;
       top: 0;
 
-      border-radius: 34px;
+      border-radius: 4px;
 
       display: flex;
       align-items: center;
-      justify-content: space-evenly;
-
-      svg {
-        color: var(--color-primary);
-      }
 
       &::selection {
       }
 
       &:before {
-        background-color: var(--color-primary);
+        background-color: var(--color-white);
         content: "";
         position: absolute;
 
-        height: 26px;
-        width: 26px;
-        bottom: 3px;
-        left: 3px;
+        height: 15px;
+        width: 15px;
+        transform: translateX(-3px);
 
         border-radius: 50%;
         ${({ clicked }) =>
@@ -63,7 +58,12 @@ export const Slider = styled.div<{ clicked: boolean }>`
     }
 
     input:checked + div:before {
-      transform: translateX(26px);
+      transform: translateX(17px);
     }
+  }
+
+  svg {
+    margin: 0 4px;
+    color: var(--color-white);
   }
 `;

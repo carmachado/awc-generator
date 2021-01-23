@@ -3,9 +3,17 @@ import { SiGithub } from "react-icons/si";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { VscThreeBars } from "react-icons/vsc";
+import { MdSettings } from "react-icons/md";
 
 import ThemeSlider from "../ThemeSlider";
-import { Childrens, Container, Footer, Navigation, Outer } from "./styles";
+import {
+  Childrens,
+  Container,
+  Footer,
+  Navigation,
+  Outer,
+  NavRight,
+} from "./styles";
 import { capitalizeFirstLetter } from "../../libs/utils/capitalizeFirstLetter";
 
 interface Props extends HTMLAttributes<HTMLDocument> {
@@ -49,9 +57,14 @@ const Page: React.FC<Props> = ({ children, navigation }: Props) => {
             );
           })}
         </div>
-        <div>
+        <NavRight>
           <ThemeSlider />
-        </div>
+          <Link href="/settings">
+            <a href="/settings">
+              <MdSettings size={25} />
+            </a>
+          </Link>
+        </NavRight>
       </Navigation>
       <Container>
         <Childrens>{children}</Childrens>
