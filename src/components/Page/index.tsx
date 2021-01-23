@@ -6,7 +6,7 @@ import { VscThreeBars } from "react-icons/vsc";
 
 import ThemeSlider from "../ThemeSlider";
 import { Childrens, Container, Footer, Navigation, Outer } from "./styles";
-import { capitalizeFirstLetter } from "../../utils/capitalizeFirstLetter";
+import { capitalizeFirstLetter } from "../../libs/utils/capitalizeFirstLetter";
 
 interface Props extends HTMLAttributes<HTMLDocument> {
   navigation: string[];
@@ -36,7 +36,7 @@ const Page: React.FC<Props> = ({ children, navigation }: Props) => {
           </Link>
           {navigation.map((nav) => {
             return (
-              <Link href={nav} key={nav}>
+              <Link href={`/challenges/${nav}`} key={nav}>
                 <a
                   href={nav}
                   className={
