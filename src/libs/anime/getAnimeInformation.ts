@@ -7,6 +7,8 @@ import {
 } from "./animeTypes";
 import { runAdditionalInformation } from "./additionalInformation/runAdditionalInformation";
 import getMedia from "../../api/getMedia";
+import { getSettings } from "../utils/getStaticInformation";
+import { SettingsProps } from "../settings/settingsType";
 
 function formatFuzzyDate(date: FuzzyDate): string {
   if (!date || !date.year) return "YYYY-MM-DD";
@@ -22,6 +24,7 @@ function formatFuzzyDate(date: FuzzyDate): string {
 
 const formatAdditionalInformation = async (
   info: MediaList,
+  settings: SettingsProps,
   requirement?: Requirement,
   fields?: string[]
 ): Promise<string> => {
@@ -32,6 +35,7 @@ const formatAdditionalInformation = async (
       return runAdditionalInformation(inf.type, inf.subtype, {
         info,
         field: { ...inf, value },
+        settings,
       });
     }
   );
@@ -40,6 +44,12 @@ const formatAdditionalInformation = async (
     return addInf.reduce((prev, curr) => `${prev} // ${curr}`);
   }
   return "";
+};
+
+const getEmoji = (settings: SettingsProps, status: string): string => {
+  if (status === "COMPLETED") return settings.completed;
+  if (status === "CURRENT" && settings.watching) return settings.watching;
+  return settings.notCompleted;
 };
 
 const formatAnimeInformation = async (
@@ -51,22 +61,29 @@ const formatAnimeInformation = async (
     status,
     startedAt,
     completedAt,
-    media: {
-      id,
-      title: { romaji },
-    },
+    media: { id, title },
   } = information;
 
-  let formattedAnime = `[${romaji}](https://anilist.co/anime/${id})\nStart: ${formatFuzzyDate(
-    startedAt
-  )} Finish: ${formatFuzzyDate(completedAt)}`;
+  const settings = getSettings();
+  const { value: language } = settings.language;
+
+  let formattedAnime = "";
+
+  if (settings.previewCards) {
+    formattedAnime += `https://anilist.co/anime/${id}`;
+  } else {
+    formattedAnime += `[${title[language]}](https://anilist.co/anime/${id})`;
+  }
+
+  formattedAnime += `\nStart: ${formatFuzzyDate(startedAt)}`;
+  formattedAnime += ` Finish: ${formatFuzzyDate(completedAt)}`;
 
   if (requirement) {
     const reqId = requirement.id.toLocaleString(undefined, {
       minimumIntegerDigits: 2,
     });
 
-    formattedAnime = `${reqId}) [${status === "COMPLETED" ? "X" : "O"}] __${
+    formattedAnime = `${reqId}) [${getEmoji(settings, status)}] __${
       requirement.question
     }__\n${formattedAnime}`;
 
@@ -75,6 +92,7 @@ const formatAnimeInformation = async (
 
     const additionalInformation = await formatAdditionalInformation(
       information,
+      settings,
       requirement,
       fields
     );

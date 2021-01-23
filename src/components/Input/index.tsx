@@ -6,9 +6,16 @@ import { StyledInput } from "./styles";
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   label?: string | undefined;
+  underDiv?: boolean;
 }
 
-const Input: React.FC<Props> = ({ name, label = "", ...rest }: Props) => {
+const Input: React.FC<Props> = ({
+  name,
+  label = "",
+  type = "input",
+  underDiv = false,
+  ...rest
+}: Props) => {
   const inputRef = useRef(null);
   const { fieldName, defaultValue, registerField, error } = useField(name);
   useEffect(() => {
@@ -18,22 +25,29 @@ const Input: React.FC<Props> = ({ name, label = "", ...rest }: Props) => {
       path: "value",
     });
   }, [fieldName, registerField]);
-  return (
+
+  const input = (
     <>
       {label && <label htmlFor={fieldName}>{label}</label>}
       <StyledInput
         id={fieldName}
         ref={inputRef}
         defaultValue={defaultValue}
+        type={type}
         {...rest}
       />
       {error && <span className="error">{error}</span>}
     </>
   );
+
+  if (underDiv) return <div>{input}</div>;
+
+  return <>{input}</>;
 };
 
 Input.defaultProps = {
   label: "",
+  underDiv: false,
 };
 
 export default Input;

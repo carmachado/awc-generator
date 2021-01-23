@@ -1,4 +1,5 @@
 import { MediaList } from "../../api/getMediaList";
+import { SettingsProps } from "../settings/settingsType";
 
 export interface FuzzyDate {
   year: number;
@@ -61,6 +62,7 @@ export interface AdditionalInformationFields extends AdditionalInformation {
 export interface AIParams {
   info: MediaList;
   field: AdditionalInformationFields;
+  settings: SettingsProps;
 }
 
 export type AIFunction = (params: AIParams) => Promise<string>;

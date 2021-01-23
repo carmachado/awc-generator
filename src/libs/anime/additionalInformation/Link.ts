@@ -20,10 +20,15 @@ const Character: AIFunction = async ({ field }: AIParams): Promise<string> => {
   return `${field.field}: [${name.full}](https://anilist.co/staff/${id})`;
 };
 
-const Anime: AIFunction = async ({ field }: AIParams): Promise<string> => {
+const Anime: AIFunction = async ({
+  field,
+  settings,
+}: AIParams): Promise<string> => {
   const id = getAnimeID(field.value);
   const { title } = await getMedia({ id });
-  return `${field.field}: [${title.romaji}](https://anilist.co/anime/${id})`;
+  const { value: language } = settings.language;
+
+  return `${field.field}: [${title[language]}](https://anilist.co/anime/${id})`;
 };
 
 const CommentUser: AIFunction = async ({

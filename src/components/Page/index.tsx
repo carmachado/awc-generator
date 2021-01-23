@@ -46,7 +46,7 @@ const Page: React.FC<Props> = ({ children, navigation }: Props) => {
             return (
               <Link href={`/challenges/${nav}`} key={nav}>
                 <a
-                  href={nav}
+                  href={`/challenges/${nav}`}
                   className={
                     router.asPath.trim() === `/${nav.trim()}` ? "active" : ""
                   }
