@@ -52,10 +52,10 @@ export default class MyDocument extends NextDocument<CustomDocumentProps> {
             content="Generates anime information to post on AWC challenges"
           />
 
-          <link rel="icon" href="favicon.svg" />
-          <link rel="mask-icon" href="favicon.svg" color="#000000" />
-          <link rel="apple-touch-icon" href="icon.png" />
-          <link rel="manifest" href="manifest.json" />
+          <link rel="icon" href="/favicon.svg" />
+          <link rel="mask-icon" href="/favicon.svg" color="#000000" />
+          <link rel="apple-touch-icon" href="/icon.png" />
+          <link rel="manifest" href="/manifest.json" />
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
             href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
@@ -63,7 +63,7 @@ export default class MyDocument extends NextDocument<CustomDocumentProps> {
           />
         </Head>
         <body>
-          <script src="noflash.js" />
+          <script src="/noflash.js" />
           <Main />
           <NextScript />
         </body>
