@@ -8,6 +8,7 @@ export interface Media {
   episodes: number | null;
   title: {
     romaji: string;
+    english: string;
   };
 }
 
@@ -28,6 +29,7 @@ const GET_MEDIA = gql`
       seasonYear
       title {
         romaji
+        english
       }
     }
   }

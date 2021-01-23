@@ -1,5 +1,5 @@
 import { cssVar, shade } from "polished";
-import { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
 export default createGlobalStyle`
   *, body {
@@ -88,4 +88,12 @@ export default createGlobalStyle`
     background-color: darkgrey;
     outline: 1px solid slategrey;
   }
+
+  *:focus-visible  {
+    border: solid 1px var(--color-primary);
+  }
+`;
+
+export const Alert = styled.div`
+  text-transform: none;
 `;

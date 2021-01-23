@@ -6,20 +6,23 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import ReactLoading from "react-loading";
 
-import { Container, Title } from "../styles/[challenge]";
+import { Container, Title } from "../../styles/[challenge]";
 
-import { setItemLocalStorage, getItemLocalStorage } from "../utils/lsnext";
+import {
+  setItemLocalStorage,
+  getItemLocalStorage,
+} from "../../libs/utils/lsnext";
 
-import Page from "../components/Page";
-import Button from "../components/Button";
-import Input from "../components/Input";
-import TextArea from "../components/TextArea";
-import { Challenge, ChallengeInformation } from "../utils/anime/animeTypes";
+import Page from "../../components/Page";
+import Button from "../../components/Button";
+import Input from "../../components/Input";
+import TextArea from "../../components/TextArea";
+import { Challenge, ChallengeInformation } from "../../libs/anime/animeTypes";
 import {
   getChallengeInformation,
   getNavigationInformation,
-} from "../utils/getStaticInformation";
-import getAnimeInformation from "../utils/anime/getAnimeInformation";
+} from "../../libs/utils/getStaticInformation";
+import getAnimeInformation from "../../libs/anime/getAnimeInformation";
 
 interface Props {
   challenge: Challenge;

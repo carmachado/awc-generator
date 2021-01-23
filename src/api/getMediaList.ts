@@ -51,6 +51,7 @@ const GET_MEDIA_LIST = gql`
         seasonYear
         title {
           romaji
+          english
         }
       }
     }

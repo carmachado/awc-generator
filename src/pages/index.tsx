@@ -4,15 +4,15 @@ import { GetStaticProps } from "next";
 
 import { Container, Title } from "../styles/index";
 
-import { setItemLocalStorage, getItemLocalStorage } from "../utils/lsnext";
+import { setItemLocalStorage, getItemLocalStorage } from "../libs/utils/lsnext";
 
 import Input from "../components/Input";
 import Page from "../components/Page";
 import Button from "../components/Button";
 import TextArea from "../components/TextArea";
-import { AnimeInformation } from "../utils/anime/animeTypes";
-import { getNavigationInformation } from "../utils/getStaticInformation";
-import getAnimeInformation from "../utils/anime/getAnimeInformation";
+import { AnimeInformation } from "../libs/anime/animeTypes";
+import { getNavigationInformation } from "../libs/utils/getStaticInformation";
+import getAnimeInformation from "../libs/anime/getAnimeInformation";
 
 interface Props {
   navigation: string[];
