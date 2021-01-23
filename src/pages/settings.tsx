@@ -69,7 +69,7 @@ const HomePage: React.FC<Props> = ({ navigation }: Props) => {
             />
             <Select
               name="language"
-              label="Language"
+              label="Title Language"
               underDiv
               options={[
                 { value: "romaji", label: "Romaji" },
