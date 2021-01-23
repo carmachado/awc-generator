@@ -69,7 +69,7 @@ export const Navigation = styled.nav`
       text-align: center;
       padding: 14px 16px;
       text-decoration: none;
-      font-size: 18px;
+      font-size: 16px;
 
       &.active {
         border-bottom: solid 2px var(--color-white);
@@ -93,7 +93,7 @@ export const Navigation = styled.nav`
       }
     }
 
-    @media screen and (max-width: 600px) {
+    @media screen and (max-width: 700px) {
       & a:not(:first-child) {
         display: none;
       }
@@ -102,7 +102,7 @@ export const Navigation = styled.nav`
         display: block;
       }
     }
-    @media screen and (max-width: 600px) {
+    @media screen and (max-width: 700px) {
       &.responsive {
         position: relative;
         flex-direction: column;
@@ -122,6 +122,9 @@ export const Navigation = styled.nav`
 export const NavRight = styled.div`
   display: flex;
   align-items: center;
+  align-self: flex-start;
+  height: 100%;
+  max-height: 50px;
   a {
     display: flex;
     align-items: center;

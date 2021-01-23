@@ -34,7 +34,6 @@ export const MultiSelect = styled(ReactSelect)`
     background-color: var(--color-white);
     color: var(--color-input-border);
     border: solid 1px var(--color-input-border);
-    transition: all 0.2s;
 
     .react-select__option {
       color: var(--color-input-border);
