@@ -1,4 +1,3 @@
-import { Check } from "@rocketseat/unform";
 import styled from "styled-components";
 
 export const StyledInput = styled.input`

@@ -25,6 +25,9 @@ export default createGlobalStyle`
     --color-primary: #FFF;
 
     --color-background-nav-hover: #21262d;
+
+    --color-select-selected-option: #409eff;
+    --color-select-focused-option: #f5f7fa;
   }
 
   .light-mode {

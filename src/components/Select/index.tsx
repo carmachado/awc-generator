@@ -21,7 +21,7 @@ const Select: React.FC<Props> = ({
     registerField({
       name: fieldName,
       ref: selectRef.current,
-      getValue: (ref: any) => {
+      getValue: (ref) => {
         if (!ref.state.value) {
           return "";
         }

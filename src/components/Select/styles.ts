@@ -4,30 +4,42 @@ import styled from "styled-components";
 export const MultiSelect = styled(ReactSelect)`
   width: 364px;
   max-width: 90%;
+  height: 32px;
 
   .react-select__control {
     height: 32px;
+    min-height: 32px;
     border: 0;
     border-radius: 6px;
     border: solid 1px var(--color-input-border);
     background-color: var(--color-input-background);
     .react-select__value-container {
-      height: 32px;
       padding-left: 12px;
+      position: initial;
       .react-select__single-value {
         color: var(--color-input-text);
         justify-self: center;
       }
     }
 
+    .react-select__indicators {
+      height: 32px;
+    }
+
     &:hover {
-      box-shadow: 0 0 0 1px var(--color-primary);
-      border: solid 1px var(--color-primary);
+      box-shadow: none;
+      border: solid 1px var(--color-input-border);
     }
   }
 
   .react-select__control--is-focused {
-    box-shadow: 0 0 0 1px var(--color-primary);
+    box-shadow: none;
+    border: solid 1px var(--color-primary);
+
+    &:hover {
+      box-shadow: none;
+      border: solid 1px var(--color-primary);
+    }
   }
 
   .react-select__menu {
@@ -40,11 +52,11 @@ export const MultiSelect = styled(ReactSelect)`
     }
 
     .react-select__option--is-selected {
-      color: #409eff;
+      color: var(--color-select-selected-option);
       background-color: var(--color-white);
     }
     .react-select__option--is-focused {
-      background-color: #f5f7fa;
+      background-color: var(--color-select-focused-option);
     }
   }
 
