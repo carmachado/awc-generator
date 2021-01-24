@@ -48,7 +48,9 @@ const Page: React.FC<Props> = ({ children, navigation }: Props) => {
                 <a
                   href={`/challenges/${nav}`}
                   className={
-                    router.asPath.trim() === `/${nav.trim()}` ? "active" : ""
+                    router.asPath.trim() === `/challenges/${nav.trim()}`
+                      ? "active"
+                      : ""
                   }
                 >
                   {capitalizeFirstLetter(nav.replace("-", " "))}

@@ -16,6 +16,6 @@ export const StyledInput = styled.input`
   }
 
   &:focus {
-    box-shadow: 0 0 0 1px var(--color-primary);
+    border: solid 1px var(--color-primary);
   }
 `;
