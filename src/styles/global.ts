@@ -93,7 +93,7 @@ export default createGlobalStyle`
   }
 
   *:focus-visible  {
-    border: solid 1px var(--color-primary) !important;
+    border: solid 1px var(--color-primary);
   }
 `;
 
