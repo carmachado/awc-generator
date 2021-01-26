@@ -7,8 +7,8 @@ import {
 } from "./animeTypes";
 import { runAdditionalInformation } from "./additionalInformation/runAdditionalInformation";
 import getMedia from "../../api/getMedia";
-import { getSettings } from "../utils/getStaticInformation";
 import { SettingsProps } from "../settings/settingsType";
+import { getSettings } from "../utils/getLocalInformation";
 
 function formatFuzzyDate(date: FuzzyDate): string {
   if (!date || !date.year) return "YYYY-MM-DD";
@@ -107,7 +107,7 @@ const getAnimeInformation = async ({
   anime,
   user,
   challenge,
-  requerementId,
+  reqId,
   fields,
 }: AnimeInformation): Promise<string> => {
   const animeID = getAnimeID(anime);
@@ -128,8 +128,7 @@ const getAnimeInformation = async ({
     if (information) {
       return await formatAnimeInformation(
         information,
-        challenge &&
-          challenge.requirements.find((req) => req.id === requerementId),
+        challenge && challenge.requirements.find((req) => req.id === reqId),
         fields
       );
     }

@@ -22,8 +22,8 @@ import {
   getChallengeInformation,
   getNavigationInformation,
 } from "../../libs/utils/getStaticInformation";
-import getAnimeInformation from "../../libs/anime/getAnimeInformation";
 import { DefaultPageProps } from "../../libs/utils/pageTypes";
+import runChallenge from "../../libs/anime/runChallenge";
 
 interface Props extends DefaultPageProps {
   challenge: Challenge;
@@ -48,19 +48,9 @@ const ChallengeComponent: React.FC<Props> = ({
       );
       setItemLocalStorage("@awc-generator:username", user);
 
-      const promises = formData.animes.map(({ URL, fields }, requerementId) => {
-        return getAnimeInformation({
-          anime: URL,
-          user,
-          challenge,
-          requerementId,
-          fields,
-        });
-      });
+      const result = await runChallenge(challenge, formData);
 
-      const result = await Promise.all(promises);
-
-      setAnimeData(`<hr>\n\n${result.join("\n\n").trim()}\n\n<hr>`);
+      setAnimeData(result);
     },
     [challenge]
   );
@@ -101,29 +91,31 @@ const ChallengeComponent: React.FC<Props> = ({
             title="Profile Name"
             required
           />
-          {challenge.requirements?.map((req) => (
-            <Scope key={req.id} path={`animes[${req.id}]`}>
-              <Input
-                name="URL"
-                label={`${req.id}) ${req.question}`}
-                placeholder="Anime URL"
-                required={challenge.defaultRequired || req.required}
-              />
-              {req.additionalInformation?.map((inf, idx) => {
-                if (["Link", "Label"].includes(inf.type))
-                  return (
-                    <Input
-                      key={`${req.id}.${inf.field}`}
-                      name={`fields[${idx}]`}
-                      placeholder={
-                        inf.field + (inf.type === "Link" ? " URL" : "")
-                      }
-                    />
-                  );
-                return null;
-              })}
-            </Scope>
-          ))}
+          {challenge.requirements
+            .filter((req) => !req.preset)
+            .map((req) => (
+              <Scope key={req.id} path={`animes[${req.id}]`}>
+                <Input
+                  name="URL"
+                  label={`${req.id}) ${req.question}`}
+                  placeholder="Anime URL"
+                  required={challenge.defaultRequired || req.required}
+                />
+                {req.additionalInformation?.map((inf, idx) => {
+                  if (["Link", "Label"].includes(inf.type))
+                    return (
+                      <Input
+                        key={`${req.id}.${inf.field}`}
+                        name={`fields[${idx}]`}
+                        placeholder={
+                          inf.field + (inf.type === "Link" ? " URL" : "")
+                        }
+                      />
+                    );
+                  return null;
+                })}
+              </Scope>
+            ))}
           <Button type="submit">Generate information</Button>
           <TextArea
             name="area"
