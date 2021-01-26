@@ -8,10 +8,8 @@ import { Container, Title } from "../styles/settings";
 import { setItemLocalStorage } from "../libs/utils/lsnext";
 
 import Page from "../components/Page";
-import {
-  getNavigationInformation,
-  getSettings,
-} from "../libs/utils/getStaticInformation";
+import { getNavigationInformation } from "../libs/utils/getStaticInformation";
+import { getSettings } from "../libs/utils/getLocalInformation";
 import Input from "../components/Input";
 import Select from "../components/Select";
 import Button from "../components/Button";

@@ -20,6 +20,7 @@ export interface Requirement {
   question: string;
   additionalInformation: AdditionalInformation[];
   required?: boolean;
+  preset?: string;
 }
 
 export interface Challenge {
@@ -29,21 +30,23 @@ export interface Challenge {
   requirements: Requirement[];
 }
 
+export interface AnimeChallenge {
+  reqId: number;
+  URL: string;
+  fields?: string[];
+}
+
 export interface ChallengeInformation {
   name: string;
   user: string;
-  animes: {
-    requerementId: number;
-    URL: string;
-    fields: string[];
-  }[];
+  animes: AnimeChallenge[];
 }
 
 export interface AnimeInformation {
   anime: string;
   user: string;
   challenge?: Challenge;
-  requerementId?: number;
+  reqId?: number;
   fields?: string[];
 }
 export function getAnimeID(anime: string): number {
