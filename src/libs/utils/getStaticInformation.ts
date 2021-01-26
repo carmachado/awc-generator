@@ -1,27 +1,28 @@
 import { SettingsProps } from "../settings/settingsType";
 import { getItemLocalStorage } from "./lsnext";
 
-interface Response {
+export interface NavigationResponse {
   name: string;
+  file?: string;
+  childrens?: NavigationResponse[];
+  path?: string;
 }
 
-export const getNavigationInformation = async (): Promise<string[]> => {
+export const getNavigationInformation = async (): Promise<
+  NavigationResponse[]
+> => {
   const resPage = await fetch(
-    `https://api.github.com/repos/carmachado/awc-generator-json/contents/`
+    `https://raw.githubusercontent.com/carmachado/awc-generator-json/development/navigation.json`
   );
 
-  const dataPage = await resPage.json();
-
-  return (dataPage as Response[])
-    .filter((res) => res.name.endsWith(".json"))
-    .map((res) => res.name.replace(".json", " "));
+  return resPage.json();
 };
 
 export const getChallengeInformation = async (
   challenge: string
 ): Promise<unknown> => {
   const promise = await fetch(
-    `https://raw.githubusercontent.com/carmachado/awc-generator-json/master/${challenge}.json`
+    `https://raw.githubusercontent.com/carmachado/awc-generator-json/development/challenges/${challenge}.json`
   );
 
   if (promise.status === 404) return null;

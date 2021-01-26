@@ -23,10 +23,10 @@ import {
   getNavigationInformation,
 } from "../../libs/utils/getStaticInformation";
 import getAnimeInformation from "../../libs/anime/getAnimeInformation";
+import { DefaultPageProps } from "../../libs/utils/pageTypes";
 
-interface Props {
+interface Props extends DefaultPageProps {
   challenge: Challenge;
-  navigation: string[];
 }
 
 const ChallengeComponent: React.FC<Props> = ({
