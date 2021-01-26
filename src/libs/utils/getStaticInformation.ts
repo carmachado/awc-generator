@@ -12,7 +12,7 @@ export const getNavigationInformation = async (): Promise<
   NavigationResponse[]
 > => {
   const resPage = await fetch(
-    `https://raw.githubusercontent.com/carmachado/awc-generator-json/development/navigation.json`
+    `https://raw.githubusercontent.com/carmachado/awc-generator-json/master/navigation.json`
   );
 
   return resPage.json();
@@ -22,7 +22,7 @@ export const getChallengeInformation = async (
   challenge: string
 ): Promise<unknown> => {
   const promise = await fetch(
-    `https://raw.githubusercontent.com/carmachado/awc-generator-json/development/challenges/${challenge}.json`
+    `https://raw.githubusercontent.com/carmachado/awc-generator-json/master/challenges/${challenge}.json`
   );
 
   if (promise.status === 404) return null;
