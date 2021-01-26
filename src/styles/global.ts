@@ -95,6 +95,10 @@ export default createGlobalStyle`
   *:focus-visible  {
     border: solid 1px var(--color-primary);
   }
+
+  button:focus-visible  {
+    border: solid 1px var(--color-primary) !important;
+  }
 `;
 
 export const Alert = styled.div`

@@ -18,12 +18,11 @@ import Button from "../components/Button";
 import CheckboxInput from "../components/CheckboxInput";
 import { capitalizeFirstLetter } from "../libs/utils/capitalizeFirstLetter";
 import { Alert } from "../styles/global";
+import { DefaultPageProps } from "../libs/utils/pageTypes";
 
-interface Props {
-  navigation: string[];
-}
-
-const HomePage: React.FC<Props> = ({ navigation }: Props) => {
+const HomePage: React.FC<DefaultPageProps> = ({
+  navigation,
+}: DefaultPageProps) => {
   const alert = useAlert();
 
   const handleSubmit = useCallback(

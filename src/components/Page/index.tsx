@@ -1,9 +1,13 @@
-import React, { HTMLAttributes, useState } from "react";
+import React, { HTMLAttributes, useEffect, useState } from "react";
 import { SiGithub } from "react-icons/si";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { VscThreeBars } from "react-icons/vsc";
-import { MdSettings } from "react-icons/md";
+import {
+  MdSettings,
+  MdKeyboardArrowDown,
+  MdKeyboardArrowUp,
+} from "react-icons/md";
 
 import ThemeSlider from "../ThemeSlider";
 import {
@@ -14,17 +18,26 @@ import {
   Outer,
   NavRight,
 } from "./styles";
-import { capitalizeFirstLetter } from "../../libs/utils/capitalizeFirstLetter";
+import { NavigationResponse } from "../../libs/utils/getStaticInformation";
+import NavLink from "../NavLink";
 
 interface Props extends HTMLAttributes<HTMLDocument> {
-  navigation: string[];
+  navigation: NavigationResponse[];
 }
 
 const Page: React.FC<Props> = ({ children, navigation }: Props) => {
-  const router = useRouter();
   const [responsive, setResponsive] = useState(false);
+  const [open, setOpen] = useState("");
+
+  const router = useRouter();
+
+  useEffect(() => {
+    setResponsive(false);
+    setOpen("");
+  }, [router]);
+
   return (
-    <Outer>
+    <Outer onClick={() => setOpen("")}>
       <Navigation>
         <div className={`div-nav${responsive ? " responsive" : ""}`}>
           <button
@@ -34,34 +47,46 @@ const Page: React.FC<Props> = ({ children, navigation }: Props) => {
           >
             <VscThreeBars />
           </button>
-          <Link href="/">
-            <a
-              href="/"
-              className={router.asPath.trim() === "/" ? "active" : ""}
-            >
-              Home
-            </a>
-          </Link>
+
+          <NavLink navigation={{ name: "Home", path: "" }} />
+
           {navigation.map((nav) => {
-            return (
-              <Link href={`/challenges/${nav}`} key={nav}>
-                <a
-                  href={`/challenges/${nav}`}
-                  className={
-                    router.asPath.trim() === `/challenges/${nav.trim()}`
-                      ? "active"
-                      : ""
-                  }
-                >
-                  {capitalizeFirstLetter(nav.replace("-", " "))}
-                </a>
-              </Link>
-            );
+            if (nav.childrens) {
+              return (
+                <div key={nav.name} className="parent">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      setOpen(nav.name === open ? "" : nav.name);
+                      e.stopPropagation();
+                    }}
+                  >
+                    {nav.name}
+                    {open === nav.name ? (
+                      <MdKeyboardArrowUp />
+                    ) : (
+                      <MdKeyboardArrowDown />
+                    )}
+                  </button>
+                  <div
+                    className={`childs${responsive ? " responsive" : ""}${
+                      open === nav.name ? " open" : ""
+                    }`}
+                  >
+                    {nav.childrens.map((child) => (
+                      <NavLink key={child.name} navigation={child} />
+                    ))}
+                  </div>
+                </div>
+              );
+            }
+
+            return <NavLink key={nav.name} navigation={nav} />;
           })}
         </div>
         <NavRight>
           <ThemeSlider />
-          <Link href="/settings">
+          <Link href="/settings" prefetch={false}>
             <a href="/settings">
               <MdSettings size={25} />
             </a>

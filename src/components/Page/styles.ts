@@ -63,13 +63,39 @@ export const Navigation = styled.nav`
     overflow: hidden;
     align-content: center;
     display: flex;
-    a {
+
+    .parent {
       float: left;
       color: var(--color-white);
       text-align: center;
-      padding: 14px 16px;
+      padding: 0;
+
+      div {
+        padding: 0;
+      }
+
+      button {
+        display: flex;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        padding: 14px 16px;
+        align-items: center;
+
+        svg {
+          margin-left: 8px;
+        }
+      }
+
       text-decoration: none;
       font-size: 16px;
+      margin: 0;
+
+      .childs {
+        display: none;
+        margin: solid 2px var(--color-white);
+        background-color: var(--color-background-nav);
+      }
 
       &.active {
         border-bottom: solid 2px var(--color-white);
@@ -77,6 +103,14 @@ export const Navigation = styled.nav`
 
       &:hover {
         background-color: var(--color-background-nav-hover);
+      }
+
+      .open {
+        position: absolute;
+        top: auto;
+        left: end;
+        display: flex;
+        flex-direction: column;
       }
     }
 
@@ -97,6 +131,9 @@ export const Navigation = styled.nav`
       & a:not(:first-child) {
         display: none;
       }
+      & div:not(:first-child) {
+        display: none;
+      }
       & button {
         float: right;
         display: block;
@@ -106,14 +143,40 @@ export const Navigation = styled.nav`
       &.responsive {
         position: relative;
         flex-direction: column;
+        width: 100%;
       }
       &.responsive button {
         width: 50px;
       }
       &.responsive a {
         float: none;
-        display: block;
+        display: flex;
+        flex-direction: column;
         text-align: left;
+      }
+      &.responsive div {
+        float: none;
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+      }
+
+      .childs {
+        position: initial;
+        &.responsive {
+          padding-left: 32px;
+        }
+      }
+
+      .parent {
+        .open {
+          position: initial;
+        }
+
+        button {
+          width: 100%;
+          text-align: left;
+        }
       }
     }
   }

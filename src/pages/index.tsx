@@ -13,12 +13,11 @@ import TextArea from "../components/TextArea";
 import { AnimeInformation } from "../libs/anime/animeTypes";
 import { getNavigationInformation } from "../libs/utils/getStaticInformation";
 import getAnimeInformation from "../libs/anime/getAnimeInformation";
+import { DefaultPageProps } from "../libs/utils/pageTypes";
 
-interface Props {
-  navigation: string[];
-}
-
-const HomePage: React.FC<Props> = ({ navigation }: Props) => {
+const HomePage: React.FC<DefaultPageProps> = ({
+  navigation,
+}: DefaultPageProps) => {
   const [animeData, setAnimeData] = useState("");
 
   const handleSubmit = useCallback(async (formData: AnimeInformation) => {
