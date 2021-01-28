@@ -32,7 +32,7 @@ const Link: AIFunction = async ({ field }: AIParams): Promise<string> => {
 };
 
 const Label: AIFunction = async ({ field }: AIParams): Promise<string> => {
-  return `[${field.values[0]}](${field.values[1]})`;
+  return `${getField(field)}[${field.values[0]}](${field.values[1]})`;
 };
 
 const Staff: AIFunction = async ({ field }: AIParams): Promise<string> => {
