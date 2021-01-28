@@ -11,7 +11,10 @@ export interface AdditionalInformation {
   type: string;
   subtype?: string;
   field?: string;
+  fields?: string[];
   name?: string;
+  splitter?: string;
+  occultField?: boolean;
 }
 
 export interface Requirement {
@@ -33,7 +36,7 @@ export interface Challenge {
 export interface AnimeChallenge {
   reqId: number;
   URL: string;
-  fields?: string[];
+  fields?: string[][] | string[];
 }
 
 export interface ChallengeInformation {
@@ -47,7 +50,7 @@ export interface AnimeInformation {
   user: string;
   challenge?: Challenge;
   reqId?: number;
-  fields?: string[];
+  fields?: string[][];
 }
 export function getAnimeID(anime: string): number {
   try {
@@ -59,7 +62,7 @@ export function getAnimeID(anime: string): number {
 }
 
 export interface AdditionalInformationFields extends AdditionalInformation {
-  value: string;
+  values?: string[];
 }
 
 export interface AIParams {

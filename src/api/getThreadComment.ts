@@ -5,6 +5,9 @@ export interface ThreadComment {
   user: {
     name: string;
   };
+  thread: {
+    title: string;
+  };
 }
 
 interface ThreadCommentData {
@@ -21,6 +24,9 @@ const GET_COMMENT_LIST = gql`
     ThreadComment(id: $id, threadId: $threadId) {
       user {
         name
+      }
+      thread {
+        title
       }
     }
   }

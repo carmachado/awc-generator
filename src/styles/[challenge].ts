@@ -50,4 +50,8 @@ export const Container = styled.div`
       resize: none;
     }
   }
+
+  .flex-line {
+    display: inline-flex;
+  }
 `;

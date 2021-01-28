@@ -27,33 +27,35 @@ interface MediaListVars {
   userName: string;
 }
 
+export const MEDIA_LIST = `
+  status
+  progress
+  startedAt {
+    year
+    month
+    day
+  }
+  completedAt {
+    year
+    month
+    day
+  }
+  media {
+    id
+    episodes
+    season
+    seasonYear
+    title {
+      romaji
+      english
+    }
+  }
+`;
+
 const GET_MEDIA_LIST = gql`
   query($userName: String, $id: Int) {
-    # Define which variables will be used in the query (id)
     MediaList(userName: $userName, mediaId: $id, type: ANIME) {
-      # Insert our variables into the query arguments (id) (type: ANIME is hard-coded in the query)
-      status
-      progress
-      startedAt {
-        year
-        month
-        day
-      }
-      completedAt {
-        year
-        month
-        day
-      }
-      media {
-        id
-        episodes
-        season
-        seasonYear
-        title {
-          romaji
-          english
-        }
-      }
+      ${MEDIA_LIST}
     }
   }
 `;

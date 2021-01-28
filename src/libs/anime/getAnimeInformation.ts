@@ -26,22 +26,29 @@ const formatAdditionalInformation = async (
   info: MediaList,
   settings: SettingsProps,
   requirement?: Requirement,
-  fields?: string[]
+  fields?: string[][]
 ): Promise<string> => {
   const promises = requirement.additionalInformation?.map(
     async (inf, fieldIdx) => {
-      const value = fields && fields[fieldIdx].trim();
+      const values = fields && fields[fieldIdx];
 
       return runAdditionalInformation(inf.type, inf.subtype, {
         info,
-        field: { ...inf, value },
+        field: { ...inf, values },
         settings,
       });
     }
   );
   if (promises) {
     const addInf = await Promise.all(promises);
-    return addInf.reduce((prev, curr) => `${prev} // ${curr}`);
+    return addInf.reduce(
+      (prev, curr, index) =>
+        `${prev}${
+          requirement.additionalInformation[index].splitter
+            ? requirement.additionalInformation[index].splitter
+            : " // "
+        }${curr}`
+    );
   }
   return "";
 };
@@ -52,10 +59,10 @@ const getEmoji = (settings: SettingsProps, status: string): string => {
   return settings.notCompleted;
 };
 
-const formatAnimeInformation = async (
+export const formatAnimeInformation = async (
   information: MediaList,
   requirement?: Requirement,
-  fields?: string[]
+  fields?: string[][]
 ): Promise<string> => {
   const {
     status,

@@ -5,6 +5,7 @@ import { Scope } from "@unform/core";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import ReactLoading from "react-loading";
+import { useAlert } from "react-alert";
 
 import { Container, Title } from "../../styles/[challenge]";
 
@@ -24,6 +25,7 @@ import {
 } from "../../libs/utils/getStaticInformation";
 import { DefaultPageProps } from "../../libs/utils/pageTypes";
 import runChallenge from "../../libs/anime/runChallenge";
+import { Alert } from "../../styles/global";
 
 interface Props extends DefaultPageProps {
   challenge: Challenge;
@@ -37,6 +39,7 @@ const ChallengeComponent: React.FC<Props> = ({
   const [animeData, setAnimeData] = useState("");
   const formRef = useRef(null);
   const [initialData, setInitialData] = useState(null);
+  const alert = useAlert();
 
   const handleSubmit = useCallback(
     async (formData: ChallengeInformation) => {
@@ -51,8 +54,15 @@ const ChallengeComponent: React.FC<Props> = ({
       const result = await runChallenge(challenge, formData);
 
       setAnimeData(result);
+
+      navigator.clipboard.writeText(result);
+
+      alert.show(<Alert>Challenge copied to clipboard</Alert>, {
+        type: "info",
+        timeout: 3000,
+      });
     },
-    [challenge]
+    [challenge, alert]
   );
 
   useEffect(() => {
@@ -102,7 +112,20 @@ const ChallengeComponent: React.FC<Props> = ({
                   required={challenge.defaultRequired || req.required}
                 />
                 {req.additionalInformation?.map((inf, idx) => {
-                  if (["Link", "Label"].includes(inf.type))
+                  if (["Link", "Label"].includes(inf.type)) {
+                    if (inf.fields) {
+                      return (
+                        <div className="flex-line">
+                          {inf.fields.map((field, fieldIdx) => (
+                            <Input
+                              key={`${req.id}.${inf.field}.${field}`}
+                              name={`fields[${idx}][${fieldIdx}]`}
+                              placeholder={field}
+                            />
+                          ))}
+                        </div>
+                      );
+                    }
                     return (
                       <Input
                         key={`${req.id}.${inf.field}`}
@@ -112,6 +135,7 @@ const ChallengeComponent: React.FC<Props> = ({
                         }
                       />
                     );
+                  }
                   return null;
                 })}
               </Scope>

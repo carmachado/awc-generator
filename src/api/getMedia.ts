@@ -20,17 +20,21 @@ interface MediaVars {
   id: number;
 }
 
+export const MEDIA = `
+  id
+  episodes
+  season
+  seasonYear
+  title {
+    romaji
+    english
+  }
+`;
+
 const GET_MEDIA = gql`
   query($id: Int) {
     Media(id: $id, type: ANIME) {
-      id
-      episodes
-      season
-      seasonYear
-      title {
-        romaji
-        english
-      }
+      ${MEDIA}
     }
   }
 `;
