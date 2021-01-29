@@ -53,5 +53,8 @@ export const Container = styled.div`
 
   .flex-line {
     display: inline-flex;
+    input + input {
+      margin-left: 8px;
+    }
   }
 `;

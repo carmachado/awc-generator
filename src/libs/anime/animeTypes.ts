@@ -30,6 +30,7 @@ export interface Challenge {
   name: string;
   link?: string;
   defaultRequired: boolean;
+  run?: { after?: { type: string }[] };
   requirements: Requirement[];
 }
 

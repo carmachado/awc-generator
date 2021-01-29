@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 import api from "./client";
-import { Media } from "./getMedia";
+import { MEDIA, Media } from "./getMedia";
 
 export interface MediaList {
   status?: string;
@@ -41,14 +41,7 @@ export const MEDIA_LIST = `
     day
   }
   media {
-    id
-    episodes
-    season
-    seasonYear
-    title {
-      romaji
-      english
-    }
+    ${MEDIA}
   }
 `;
 

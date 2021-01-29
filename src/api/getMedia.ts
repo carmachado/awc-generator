@@ -10,6 +10,7 @@ export interface Media {
     romaji: string;
     english: string;
   };
+  genres: [string];
 }
 
 interface MediaData {
@@ -29,6 +30,7 @@ export const MEDIA = `
     romaji
     english
   }
+  genres
 `;
 
 const GET_MEDIA = gql`

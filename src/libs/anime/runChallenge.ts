@@ -8,6 +8,9 @@ import {
   getAnimeID,
 } from "./animeTypes";
 import { formatAnimeInformation } from "./getAnimeInformation";
+import * as run from "./run";
+import { getSettings } from "../utils/getLocalInformation";
+import { MediaListReq } from "./run/runTypes";
 
 const runChallenge = async (
   challenge: Challenge,
@@ -29,6 +32,8 @@ const runChallenge = async (
     getMediaListAll({ ids, userName: formData.user }),
   ]);
 
+  const arrayInformation: MediaListReq[] = [];
+
   const promises = animes.map(({ URL, fields: addFields, reqId }) => {
     let fields: string[][];
 
@@ -44,14 +49,33 @@ const runChallenge = async (
     let information: MediaList = mediaList.find((ml) => ml.media.id === id);
     if (!information) information = { media: media.find((m) => m.id === id) };
 
-    return formatAnimeInformation(
-      information,
-      challenge.requirements.find((req) => req.id === reqId),
-      fields
-    );
+    if (information.media) {
+      arrayInformation.push({ ...information, reqId });
+
+      return formatAnimeInformation(
+        information,
+        challenge.requirements.find((req) => req.id === reqId),
+        fields
+      );
+    }
+    return "Not found.";
   });
 
-  const result = await Promise.all(promises);
+  let result = await Promise.all(promises);
+
+  if (challenge.run) {
+    const promisesRuns = challenge.run.after.map<Promise<string>>(
+      (runChallenge) =>
+        run[runChallenge.type]({
+          mediaLists: arrayInformation,
+          settings: getSettings(),
+        })
+    );
+
+    const runResults = await Promise.all(promisesRuns);
+
+    result = [...result, ...runResults];
+  }
 
   return `<hr>\n\n${result.join("\n\n").trim()}\n`;
 };

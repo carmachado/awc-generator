@@ -79,6 +79,21 @@ export default createGlobalStyle`
     height: 100vh;
   }
 
+  .full_loading {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    position:fixed;
+    top:0;
+    width:100%;
+    height:100%;
+    background:#000;
+    opacity: 0.7;
+    filter: alpha(opacity=70); /* For IE8 and earlier */
+    z-index:10000;
+
+  }
+
   body::-webkit-scrollbar {
   width: 1em;
 }

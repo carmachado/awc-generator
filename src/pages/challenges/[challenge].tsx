@@ -24,8 +24,8 @@ import {
   getNavigationInformation,
 } from "../../libs/utils/getStaticInformation";
 import { DefaultPageProps } from "../../libs/utils/pageTypes";
-import runChallenge from "../../libs/anime/runChallenge";
 import { Alert } from "../../styles/global";
+import runChallenge from "../../libs/anime/runChallenge";
 
 interface Props extends DefaultPageProps {
   challenge: Challenge;
@@ -37,6 +37,7 @@ const ChallengeComponent: React.FC<Props> = ({
 }: Props) => {
   const router = useRouter();
   const [animeData, setAnimeData] = useState("");
+  const [loading, setLoading] = useState(false);
   const formRef = useRef(null);
   const [initialData, setInitialData] = useState(null);
   const alert = useAlert();
@@ -51,16 +52,22 @@ const ChallengeComponent: React.FC<Props> = ({
       );
       setItemLocalStorage("@awc-generator:username", user);
 
-      const result = await runChallenge(challenge, formData);
+      try {
+        setLoading(true);
 
-      setAnimeData(result);
+        const result = await runChallenge(challenge, formData);
 
-      navigator.clipboard.writeText(result);
+        setAnimeData(result);
 
-      alert.show(<Alert>Challenge copied to clipboard</Alert>, {
-        type: "info",
-        timeout: 3000,
-      });
+        navigator.clipboard.writeText(result);
+
+        alert.show(<Alert>Challenge copied to clipboard</Alert>, {
+          type: "info",
+          timeout: 3000,
+        });
+      } finally {
+        setLoading(false);
+      }
     },
     [challenge, alert]
   );
@@ -73,6 +80,7 @@ const ChallengeComponent: React.FC<Props> = ({
     const data = challengels && JSON.parse(challengels);
 
     setInitialData({ ...data, user });
+    setLoading(false);
   }, [challenge]);
 
   if (router.isFallback) {
@@ -93,6 +101,11 @@ const ChallengeComponent: React.FC<Props> = ({
             challenge.name
           )}
         </Title>
+        {loading && (
+          <div className="full_loading">
+            <ReactLoading type="spin" height="10%" width="10%" />
+          </div>
+        )}
         <Form ref={formRef} onSubmit={handleSubmit} initialData={initialData}>
           <Input
             name="user"
@@ -115,7 +128,10 @@ const ChallengeComponent: React.FC<Props> = ({
                   if (["Link", "Label"].includes(inf.type)) {
                     if (inf.fields) {
                       return (
-                        <div className="flex-line">
+                        <div
+                          className="flex-line"
+                          key={`${req.id}.${inf.field}`}
+                        >
                           {inf.fields.map((field, fieldIdx) => (
                             <Input
                               key={`${req.id}.${inf.field}.${field}`}
