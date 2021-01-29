@@ -36,8 +36,9 @@ export const runAdditionalInformation = async (
   const command = additionalRun && additionalRun[subtype || type];
 
   try {
-    return command && command(params);
+    if (command) return await command(params);
   } catch (error) {
     return error.message;
   }
+  return "";
 };

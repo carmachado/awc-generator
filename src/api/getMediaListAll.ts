@@ -7,7 +7,7 @@ interface MediaListData {
     pageInfo: {
       lastPage: number;
     };
-    mediaList: [MediaList];
+    mediaList: MediaList[];
   };
 }
 
@@ -33,7 +33,7 @@ const GET_MEDIA_LIST = gql`
 const getMediaList = async ({
   ids,
   userName,
-}: MediaListVars): Promise<[MediaList]> => {
+}: MediaListVars): Promise<MediaList[]> => {
   const result = await api.query<MediaListData, MediaListVars>({
     query: GET_MEDIA_LIST,
     variables: { ids, userName, page: 1 },
@@ -41,7 +41,7 @@ const getMediaList = async ({
 
   let medias = result.data.Page.mediaList;
 
-  let promises: [Promise<ApolloQueryResult<MediaListData>>];
+  const promises: Promise<ApolloQueryResult<MediaListData>>[] = [];
   const { lastPage } = result.data.Page.pageInfo;
 
   for (let page = 2; page <= lastPage; page += 1) {
@@ -61,7 +61,7 @@ const getMediaList = async ({
         return { ...prev, ...curr };
       });
 
-    medias = { ...medias, ...pagesMedia };
+    medias = [...medias, ...pagesMedia];
   }
   return medias;
 };
