@@ -51,9 +51,7 @@ const getMediaList = async ({ ids }: MediaVars): Promise<Media[]> => {
   }
 
   if (lastPage >= 2) {
-    console.log("a");
     const results = await Promise.all(promises);
-    console.log("b");
     const pagesMedia = results
       .map((value) => value.data.Page.media)
       .reduce((prev, curr) => {
