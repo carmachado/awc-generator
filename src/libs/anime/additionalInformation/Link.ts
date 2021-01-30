@@ -54,7 +54,9 @@ const CommentTitle: AIFunction = async ({ field }) => {
     thread: { title },
   } = await getThreadCommentsURL(field.values[0]);
 
-  return `${getField(field)}[${title}](${field.values[0]})`;
+  const formattedTitle = title.replace("AWC: ", "");
+
+  return `${getField(field)}[${formattedTitle}](${field.values[0]})`;
 };
 
 export default {
