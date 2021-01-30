@@ -1,22 +1,7 @@
 import { gql } from "@apollo/client";
 import api from "./client";
-import { Media } from "./getMedia";
-
-export interface MediaList {
-  status?: string;
-  progress?: number;
-  startedAt?: {
-    year: number | null;
-    month: number | null;
-    day: number | null;
-  };
-  completedAt?: {
-    year: number | null;
-    month: number | null;
-    day: number | null;
-  };
-  media: Media;
-}
+import { MEDIA } from "./getMedia";
+import { MediaList } from "./types";
 
 interface MediaListData {
   MediaList: MediaList;
@@ -27,33 +12,28 @@ interface MediaListVars {
   userName: string;
 }
 
+export const MEDIA_LIST = `
+  status
+  progress
+  startedAt {
+    year
+    month
+    day
+  }
+  completedAt {
+    year
+    month
+    day
+  }
+  media {
+    ${MEDIA}
+  }
+`;
+
 const GET_MEDIA_LIST = gql`
   query($userName: String, $id: Int) {
-    # Define which variables will be used in the query (id)
     MediaList(userName: $userName, mediaId: $id, type: ANIME) {
-      # Insert our variables into the query arguments (id) (type: ANIME is hard-coded in the query)
-      status
-      progress
-      startedAt {
-        year
-        month
-        day
-      }
-      completedAt {
-        year
-        month
-        day
-      }
-      media {
-        id
-        episodes
-        season
-        seasonYear
-        title {
-          romaji
-          english
-        }
-      }
+      ${MEDIA_LIST}
     }
   }
 `;

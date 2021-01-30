@@ -1,11 +1,6 @@
 import { gql } from "@apollo/client";
 import api from "./client";
-
-export interface Staff {
-  name: {
-    full: string;
-  };
-}
+import { Staff } from "./types";
 
 interface StaffData {
   Staff: Staff;

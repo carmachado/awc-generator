@@ -1,11 +1,6 @@
 import { gql } from "@apollo/client";
 import api from "./client";
-
-export interface ThreadComment {
-  user: {
-    name: string;
-  };
-}
+import { ThreadComment } from "./types";
 
 interface ThreadCommentData {
   ThreadComment: ThreadComment[];
@@ -22,6 +17,9 @@ const GET_COMMENT_LIST = gql`
       user {
         name
       }
+      thread {
+        title
+      }
     }
   }
 `;
@@ -36,6 +34,18 @@ const getThreadComments = async ({
   });
 
   return result.data.ThreadComment;
+};
+
+export const getThreadCommentsURL = async (
+  link: string
+): Promise<ThreadComment> => {
+  const url = new URL(link);
+  const threadId = Number.parseInt(url.pathname.split("/")[3], 10);
+  const id = Number.parseInt(url.pathname.split("/")[5], 10);
+
+  const [first] = await getThreadComments({ id, threadId });
+
+  return first;
 };
 
 export default getThreadComments;

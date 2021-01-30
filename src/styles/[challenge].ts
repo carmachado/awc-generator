@@ -50,4 +50,11 @@ export const Container = styled.div`
       resize: none;
     }
   }
+
+  .flex-line {
+    display: inline-flex;
+    input + input {
+      margin-left: 8px;
+    }
+  }
 `;

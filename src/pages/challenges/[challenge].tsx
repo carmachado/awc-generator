@@ -5,6 +5,7 @@ import { Scope } from "@unform/core";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import ReactLoading from "react-loading";
+import { useAlert } from "react-alert";
 
 import { Container, Title } from "../../styles/[challenge]";
 
@@ -23,6 +24,7 @@ import {
   getNavigationInformation,
 } from "../../libs/utils/getStaticInformation";
 import { DefaultPageProps } from "../../libs/utils/pageTypes";
+import { Alert } from "../../styles/global";
 import runChallenge from "../../libs/anime/runChallenge";
 
 interface Props extends DefaultPageProps {
@@ -35,8 +37,10 @@ const ChallengeComponent: React.FC<Props> = ({
 }: Props) => {
   const router = useRouter();
   const [animeData, setAnimeData] = useState("");
+  const [loading, setLoading] = useState(false);
   const formRef = useRef(null);
   const [initialData, setInitialData] = useState(null);
+  const alert = useAlert();
 
   const handleSubmit = useCallback(
     async (formData: ChallengeInformation) => {
@@ -48,11 +52,24 @@ const ChallengeComponent: React.FC<Props> = ({
       );
       setItemLocalStorage("@awc-generator:username", user);
 
-      const result = await runChallenge(challenge, formData);
+      try {
+        setLoading(true);
 
-      setAnimeData(result);
+        const result = await runChallenge(challenge, formData);
+
+        setAnimeData(result);
+
+        navigator.clipboard.writeText(result);
+
+        alert.show(<Alert>Challenge copied to clipboard</Alert>, {
+          type: "info",
+          timeout: 3000,
+        });
+      } finally {
+        setLoading(false);
+      }
     },
-    [challenge]
+    [challenge, alert]
   );
 
   useEffect(() => {
@@ -63,6 +80,7 @@ const ChallengeComponent: React.FC<Props> = ({
     const data = challengels && JSON.parse(challengels);
 
     setInitialData({ ...data, user });
+    setLoading(false);
   }, [challenge]);
 
   if (router.isFallback) {
@@ -83,6 +101,11 @@ const ChallengeComponent: React.FC<Props> = ({
             challenge.name
           )}
         </Title>
+        {loading && (
+          <div className="full_loading">
+            <ReactLoading type="spin" height="10%" width="10%" />
+          </div>
+        )}
         <Form ref={formRef} onSubmit={handleSubmit} initialData={initialData}>
           <Input
             name="user"
@@ -102,7 +125,23 @@ const ChallengeComponent: React.FC<Props> = ({
                   required={challenge.defaultRequired || req.required}
                 />
                 {req.additionalInformation?.map((inf, idx) => {
-                  if (["Link", "Label"].includes(inf.type))
+                  if (["Link", "Label"].includes(inf.type)) {
+                    if (inf.fields) {
+                      return (
+                        <div
+                          className="flex-line"
+                          key={`${req.id}.${inf.field}`}
+                        >
+                          {inf.fields.map((field, fieldIdx) => (
+                            <Input
+                              key={`${req.id}.${inf.field}.${field}`}
+                              name={`fields[${idx}][${fieldIdx}]`}
+                              placeholder={field}
+                            />
+                          ))}
+                        </div>
+                      );
+                    }
                     return (
                       <Input
                         key={`${req.id}.${inf.field}`}
@@ -112,6 +151,7 @@ const ChallengeComponent: React.FC<Props> = ({
                         }
                       />
                     );
+                  }
                   return null;
                 })}
               </Scope>
@@ -120,10 +160,10 @@ const ChallengeComponent: React.FC<Props> = ({
           <TextArea
             name="area"
             id="result"
-            rows={40}
+            rows={10}
             value={animeData}
             readOnly
-            title="return of serach at anilist"
+            title="search return on anilist"
           />
         </Form>
       </Container>

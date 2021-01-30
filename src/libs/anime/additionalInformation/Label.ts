@@ -1,21 +1,34 @@
-import { AIFunction, AIParams } from "../animeTypes";
+import { AIFunction, AIParams, getField } from "../animeTypes";
 
 const Label: AIFunction = async ({ field }: AIParams): Promise<string> => {
-  return `${field.field}: ${field.value}`;
+  return `${field.field}: ${field.values[0]}`;
 };
 
-const UserFavorites: AIFunction = async ({
-  field,
-}: AIParams): Promise<string> => {
-  return `${field.field}: [${field.value}](https://anilist.co/user/${field.value}/favorites)`;
+const UserFavorites: AIFunction = async ({ field }) => {
+  const user = field.values[0];
+
+  return `${getField(
+    field
+  )}[${user}](https://anilist.co/user/${user}/favorites)`;
 };
 
-const User: AIFunction = async ({ field }: AIParams): Promise<string> => {
-  return `${field.field}: [${field.value}](https://anilist.co/user/${field.value})`;
+const UserAnimeList: AIFunction = async ({ field }) => {
+  const user = field.values[0];
+
+  return `${getField(
+    field
+  )}[${user}](https://anilist.co/user/${user}/animelist)`;
+};
+
+const User: AIFunction = async ({ field }) => {
+  const user = field.values[0];
+
+  return `${getField(field)}[${user}](https://anilist.co/user/${user})`;
 };
 
 export default {
   Label,
-  UserFavorites,
   User,
+  UserFavorites,
+  UserAnimeList,
 };
