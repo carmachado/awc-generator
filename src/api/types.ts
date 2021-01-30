@@ -13,15 +13,17 @@ export interface Staff {
   };
 }
 
+export interface MediaTitle {
+  romaji: string;
+  english: string;
+}
+
 export interface Media {
   id: number;
   season: string;
   seasonYear: number;
   episodes: number | null;
-  title: {
-    romaji: string;
-    english: string;
-  };
+  title: MediaTitle;
   genres: [string];
 }
 

@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import getGenreCollection from "../../../api/getGenreCollection";
 import { SettingsProps } from "../../settings/settingsType";
+import { getTitle } from "../animeTypes";
 import { MediaListReq, RunFunction, RunParams } from "./runTypes";
 
 interface GenreCheck {
@@ -84,7 +85,7 @@ const GenreCheckList: RunFunction = async ({
         anime.reqId
       }\n${getAnimeTitle(
         settings,
-        anime.media.title[settings.language.value],
+        getTitle(anime.media.title, settings),
         anime.media.id
       )}\n`;
     } else {

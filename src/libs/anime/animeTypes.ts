@@ -1,4 +1,4 @@
-import { MediaList } from "../../api/types";
+import { MediaList, MediaTitle } from "../../api/types";
 import { SettingsProps } from "../settings/settingsType";
 
 export interface FuzzyDate {
@@ -53,6 +53,18 @@ export interface AnimeInformation {
   reqId?: number;
   fields?: string[][];
 }
+export interface AdditionalInformationFields extends AdditionalInformation {
+  values?: string[];
+}
+
+export interface AIParams {
+  info: MediaList;
+  field: AdditionalInformationFields;
+  settings: SettingsProps;
+}
+
+export type AIFunction = (params: AIParams) => Promise<string>;
+
 export function getAnimeID(anime: string): number {
   try {
     const animeURL = new URL(anime);
@@ -70,14 +82,9 @@ export const getField = ({
   return `${field}: `;
 };
 
-export interface AdditionalInformationFields extends AdditionalInformation {
-  values?: string[];
-}
-
-export interface AIParams {
-  info: MediaList;
-  field: AdditionalInformationFields;
-  settings: SettingsProps;
-}
-
-export type AIFunction = (params: AIParams) => Promise<string>;
+export const getTitle = (
+  title: MediaTitle,
+  settings: SettingsProps
+): string => {
+  return title[settings.language.value] || title.romaji;
+};

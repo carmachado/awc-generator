@@ -1,4 +1,4 @@
-import { FuzzyDate, Requirement } from "./animeTypes";
+import { FuzzyDate, getTitle, Requirement } from "./animeTypes";
 import { MediaList } from "../../api/types";
 import { SettingsProps } from "../settings/settingsType";
 import { runAdditionalInformation } from "./additionalInformation/runAdditionalInformation";
@@ -66,14 +66,15 @@ const formatAnimeInformation = async (
   } = information;
 
   const settings = getSettings();
-  const { value: language } = settings.language;
 
   let formattedAnime = "";
+
+  const formattedTitle = getTitle(title, settings);
 
   if (settings.previewCards) {
     formattedAnime += `https://anilist.co/anime/${id}`;
   } else {
-    formattedAnime += `[${title[language]}](https://anilist.co/anime/${id})`;
+    formattedAnime += `[${formattedTitle}](https://anilist.co/anime/${id})`;
   }
 
   formattedAnime += `\nStart: ${formatFuzzyDate(startedAt)}`;
