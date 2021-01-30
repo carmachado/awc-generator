@@ -1,14 +1,6 @@
 import { gql } from "@apollo/client";
 import api from "./client";
-
-export interface ThreadComment {
-  user: {
-    name: string;
-  };
-  thread: {
-    title: string;
-  };
-}
+import { ThreadComment } from "./types";
 
 interface ThreadCommentData {
   ThreadComment: ThreadComment[];

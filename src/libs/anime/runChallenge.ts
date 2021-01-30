@@ -1,4 +1,4 @@
-import { MediaList } from "../../api/getMediaList";
+import { defaultMedia, MediaList } from "../../api/types";
 import getMediaAll from "../../api/getMediaAll";
 import getMediaListAll from "../../api/getMediaListAll";
 import {
@@ -7,7 +7,7 @@ import {
   ChallengeInformation,
   getAnimeID,
 } from "./animeTypes";
-import { formatAnimeInformation } from "./getAnimeInformation";
+import formatAnimeInformation from "./formatAnimeInformation";
 import * as run from "./run";
 import { getSettings } from "../utils/getLocalInformation";
 import { MediaListReq } from "./run/runTypes";
@@ -49,16 +49,14 @@ const runChallenge = async (
     let information: MediaList = mediaList.find((ml) => ml.media.id === id);
     if (!information) information = { media: media.find((m) => m.id === id) };
 
-    if (information.media) {
-      arrayInformation.push({ ...information, reqId });
+    if (information.media) arrayInformation.push({ ...information, reqId });
+    else information = { media: defaultMedia };
 
-      return formatAnimeInformation(
-        information,
-        challenge.requirements.find((req) => req.id === reqId),
-        fields
-      );
-    }
-    return "Not found.";
+    return formatAnimeInformation(
+      information,
+      challenge.requirements.find((req) => req.id === reqId),
+      fields
+    );
   });
 
   let result = await Promise.all(promises);

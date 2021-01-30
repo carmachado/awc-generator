@@ -8,7 +8,7 @@ const Episode: AIFunction = async ({ info }: AIParams): Promise<string> => {
     media: { episodes },
   } = info;
 
-  return `Ep: ${progress}/${episodes || "?"}`;
+  return `Ep: ${progress || "?"}/${episodes || "?"}`;
 };
 
 const YearSeason: AIFunction = async ({ info }: AIParams): Promise<string> => {

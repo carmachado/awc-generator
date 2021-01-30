@@ -1,22 +1,7 @@
 import { gql } from "@apollo/client";
 import api from "./client";
-import { MEDIA, Media } from "./getMedia";
-
-export interface MediaList {
-  status?: string;
-  progress?: number;
-  startedAt?: {
-    year: number | null;
-    month: number | null;
-    day: number | null;
-  };
-  completedAt?: {
-    year: number | null;
-    month: number | null;
-    day: number | null;
-  };
-  media: Media;
-}
+import { MEDIA } from "./getMedia";
+import { MediaList } from "./types";
 
 interface MediaListData {
   MediaList: MediaList;

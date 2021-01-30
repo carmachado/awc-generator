@@ -160,10 +160,10 @@ const ChallengeComponent: React.FC<Props> = ({
           <TextArea
             name="area"
             id="result"
-            rows={40}
+            rows={10}
             value={animeData}
             readOnly
-            title="return of serach at anilist"
+            title="search return on anilist"
           />
         </Form>
       </Container>

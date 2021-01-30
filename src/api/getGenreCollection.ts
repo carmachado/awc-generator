@@ -1,7 +1,6 @@
 import { gql } from "@apollo/client";
 import api from "./client";
-
-export type GenreCollection = string[];
+import { GenreCollection } from "./types";
 
 interface GenreCollectionData {
   GenreCollection: GenreCollection;

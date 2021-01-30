@@ -1,4 +1,4 @@
-import { MediaList } from "../../api/getMediaList";
+import { MediaList } from "../../api/types";
 import { SettingsProps } from "../settings/settingsType";
 
 export interface FuzzyDate {

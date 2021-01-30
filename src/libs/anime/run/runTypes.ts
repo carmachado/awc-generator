@@ -1,5 +1,9 @@
-import { MediaList } from "../../../api/getMediaList";
+import { MediaList } from "../../../api/types";
 import { SettingsProps } from "../../settings/settingsType";
+
+export interface MediaListReq extends MediaList {
+  reqId: number;
+}
 
 export interface RunParams {
   mediaLists: MediaListReq[];
@@ -7,7 +11,3 @@ export interface RunParams {
 }
 
 export type RunFunction = (params: RunParams) => Promise<string>;
-
-export interface MediaListReq extends MediaList {
-  reqId: number;
-}

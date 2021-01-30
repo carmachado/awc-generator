@@ -1,6 +1,7 @@
 import { ApolloQueryResult, gql } from "@apollo/client";
 import api from "./client";
-import { Media, MEDIA } from "./getMedia";
+import { MEDIA } from "./getMedia";
+import { Media } from "./types";
 
 interface MediaData {
   Page: {

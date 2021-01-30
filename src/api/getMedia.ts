@@ -1,17 +1,6 @@
 import { gql } from "@apollo/client";
 import api from "./client";
-
-export interface Media {
-  id: number;
-  season: string;
-  seasonYear: number;
-  episodes: number | null;
-  title: {
-    romaji: string;
-    english: string;
-  };
-  genres: [string];
-}
+import { Media } from "./types";
 
 interface MediaData {
   Media: Media;
