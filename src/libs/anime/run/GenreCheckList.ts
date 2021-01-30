@@ -1,20 +1,16 @@
 /* eslint-disable no-param-reassign */
 import getGenreCollection from "../../../api/getGenreCollection";
 import { SettingsProps } from "../../settings/settingsType";
-import { RunFunction, RunParams } from "./runTypes";
+import { MediaListReq, RunFunction, RunParams } from "./runTypes";
 
 interface GenreCheck {
   genre: string;
   count: number;
-  anime?: Media;
+  anime?: MediaGenre;
 }
 
-interface Media {
-  id: number;
-  linkID: number;
-  status: string;
-  media: string;
-  genre: GenreCheck[];
+interface MediaGenre extends MediaListReq {
+  genres: GenreCheck[];
 }
 
 const getEmoji = (settings: SettingsProps, status: string): string => {
@@ -40,29 +36,26 @@ const GenreCheckList: RunFunction = async ({
 }: RunParams) => {
   const genreCollection = await getGenreCollection();
 
-  const removedHentai = genreCollection.filter((genre) => genre !== "Hentai");
+  const genresNotHentai = genreCollection.filter((genre) => genre !== "Hentai");
 
-  const genreList: GenreCheck[] = removedHentai.map((value) => {
+  const genreList: GenreCheck[] = genresNotHentai.map((value) => {
     return { genre: value, count: 0 };
   });
 
-  let medias: Media[] = mediaLists.map((ml) => {
+  let medias: MediaGenre[] = mediaLists.map((ml) => {
     return {
-      id: ml.reqId,
-      linkID: ml.media.id,
-      status: ml.status,
-      media: ml.media.title[settings.language.value],
-      genre: ml.media.genres.map((value) =>
+      ...ml,
+      genres: ml.media.genres.map((value) =>
         genreList.find(({ genre }) => genre === value)
       ),
     };
   });
 
   medias.forEach((media) => {
-    media.genre.forEach((genre) => {
+    media.genres.forEach((genre) => {
       genre.count += 1;
     });
-    media.genre = media.genre.sort((a, b) => a.count - b.count);
+    media.genres = media.genres.sort((a, b) => a.count - b.count);
   });
 
   const sortedGenres = genreList.sort((a, b) => a.count - b.count);
@@ -71,7 +64,7 @@ const GenreCheckList: RunFunction = async ({
 
   sortedGenres.forEach((genre) => {
     const anime = medias.find((media) =>
-      media.genre.find((gen) => genre.genre === gen.genre)
+      media.genres.find((gen) => genre.genre === gen.genre)
     );
 
     if (anime) {
@@ -80,16 +73,20 @@ const GenreCheckList: RunFunction = async ({
     }
   });
 
-  const deSortedGenre = sortedGenres.sort((a, b) =>
+  const resortedGenre = sortedGenres.sort((a, b) =>
     a.genre.localeCompare(b.genre)
   );
 
-  deSortedGenre.forEach(({ anime, genre }) => {
+  resortedGenre.forEach(({ anime, genre }) => {
     if (anime) {
       const emoji = getEmoji(settings, anime.status);
-      result += `\n[${emoji}] ${genre}: #${anime.id < 10 ? "0" : ""}${
-        anime.id
-      }\n${getAnimeTitle(settings, anime.media, anime.linkID)}\n`;
+      result += `\n[${emoji}] ${genre}: #${anime.reqId < 10 ? "0" : ""}${
+        anime.reqId
+      }\n${getAnimeTitle(
+        settings,
+        anime.media.title[settings.language.value],
+        anime.media.id
+      )}\n`;
     } else {
       result += `\n[O] ${genre}: #00\n${getAnimeTitle(
         settings,
