@@ -62,6 +62,14 @@ export function getAnimeID(anime: string): number {
   }
 }
 
+export const getField = ({
+  field,
+  occultField,
+}: AdditionalInformationFields): string => {
+  if (occultField) return "";
+  return `${field}: `;
+};
+
 export interface AdditionalInformationFields extends AdditionalInformation {
   values?: string[];
 }

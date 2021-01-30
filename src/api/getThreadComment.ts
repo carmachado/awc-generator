@@ -44,4 +44,16 @@ const getThreadComments = async ({
   return result.data.ThreadComment;
 };
 
+export const getThreadCommentsURL = async (
+  link: string
+): Promise<ThreadComment> => {
+  const url = new URL(link);
+  const threadId = Number.parseInt(url.pathname.split("/")[3], 10);
+  const id = Number.parseInt(url.pathname.split("/")[5], 10);
+
+  const [first] = await getThreadComments({ id, threadId });
+
+  return first;
+};
+
 export default getThreadComments;
