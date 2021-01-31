@@ -18,7 +18,7 @@ const runChallenge = async (
 ): Promise<string> => {
   const animes: AnimeChallenge[] = challenge.requirements.map(
     ({ id, preset }) => {
-      const data = formData.animes[id];
+      const data = formData.animes && formData.animes[0];
       if (data) return { ...data, reqId: id };
 
       return { URL: preset, reqId: id };
