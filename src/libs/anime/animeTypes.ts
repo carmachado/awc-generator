@@ -15,6 +15,7 @@ export interface AdditionalInformation {
   name?: string;
   splitter?: string;
   occultField?: boolean;
+  runAfter?: string;
 }
 
 export interface Requirement {
