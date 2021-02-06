@@ -4,16 +4,21 @@ import { SettingsProps } from "../settings/settingsType";
 import { runAdditionalInformation } from "./additionalInformation/runAdditionalInformation";
 import { getSettings } from "../utils/getLocalInformation";
 
+function getDigits(value: number, digits: number): string {
+  const repeat = digits - value.toString().length;
+  let result = "";
+  for (let i = 0; i < repeat; i += 1) {
+    result += "0";
+  }
+  return result + value.toString();
+}
+
 function formatFuzzyDate(date: FuzzyDate): string {
   if (!date || !date.year) return "YYYY-MM-DD";
 
   const { year, month, day } = date;
 
-  return new Date(year, month, day).toLocaleDateString("fr-CA", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
+  return `${year}-${getDigits(month, 2)}-${getDigits(day, 2)}`;
 }
 
 const formatAdditionalInformation = async (
