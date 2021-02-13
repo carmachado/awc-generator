@@ -63,7 +63,6 @@ const ChallengeComponent: React.FC<Props> = ({
 
         alert.show(<Alert>Challenge copied to clipboard</Alert>, {
           type: "info",
-          timeout: 3000,
         });
       } finally {
         setLoading(false);

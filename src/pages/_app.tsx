@@ -7,7 +7,7 @@ import { positions, Provider, transitions } from "react-alert";
 import GlobalStyles from "../styles/global";
 
 const options = {
-  timeout: 5000,
+  timeout: 3000,
   position: positions.TOP_CENTER,
   transition: transitions.SCALE,
 };

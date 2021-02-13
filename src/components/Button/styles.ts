@@ -1,9 +1,13 @@
 import styled from "styled-components";
 
-export const StyledButton = styled.button`
+interface Props {
+  color?: string;
+}
+
+export const StyledButton = styled.button<Props>`
   width: 250px;
   height: 32px;
-  background: var(--color-green);
+  background: var(${(props) => `--color-${props.color || "green"}`});
   border-radius: 5px;
   border: 0;
   color: var(--color-white);
@@ -12,6 +16,6 @@ export const StyledButton = styled.button`
   max-width: 90%;
 
   &:hover {
-    background: var(--color-green-dark);
+    filter: brightness(90%);
   }
 `;

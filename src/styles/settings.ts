@@ -26,26 +26,31 @@ export const Container = styled.div`
     align-self: left;
   }
 
-  .emojis {
+  section {
     border-top: solid 1px var(--color-primary);
     width: 100%;
+    margin-bottom: 16px;
+    max-width: 100%;
+
+    button {
+      margin-bottom: 0;
+      margin-right: 8px;
+    }
+  }
+
+  .emojis {
     display: grid;
     grid-template-columns: 33% 34% 33%;
     grid-template-rows: 50% 50%;
     align-items: center;
-    margin-bottom: 16px;
     grid-auto-flow: column;
   }
 
   .layout {
-    border-top: solid 1px var(--color-primary);
-    width: 100%;
-    margin-bottom: 16px;
     display: flex;
     justify-content: center;
     align-items: flex-start;
     flex-direction: column;
-    max-width: 100%;
 
     input {
       width: 16px;
@@ -60,6 +65,7 @@ export const Container = styled.div`
     }
   }
   button {
-    width: 100px;
+    width: 160px;
+    margin-bottom: 32px;
   }
 `;
