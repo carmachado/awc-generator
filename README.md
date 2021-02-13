@@ -24,6 +24,8 @@ Disclaimer: This app is completely unrelated with AWC or Anilist.
 
 ## Getting Started
 
+Site: https://awc-generator.vercel.app/
+
 1. Clone repository
 
    ```bash
