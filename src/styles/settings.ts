@@ -31,6 +31,11 @@ export const Container = styled.div`
     width: 100%;
     margin-bottom: 16px;
     max-width: 100%;
+
+    button {
+      margin-bottom: 0;
+      margin-right: 8px;
+    }
   }
 
   .emojis {
@@ -61,6 +66,6 @@ export const Container = styled.div`
   }
   button {
     width: 160px;
-    margin-right: 8px;
+    margin-bottom: 32px;
   }
 `;
