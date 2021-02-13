@@ -22,5 +22,9 @@ export const Container = styled.div`
     * {
       margin-top: 8px;
     }
+
+    textarea {
+      resize: none;
+    }
   }
 `;

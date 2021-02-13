@@ -28,7 +28,7 @@ const Select: React.FC<Props> = ({
         return ref.state.value.value;
       },
       setValue: (ref, value) => {
-        ref.select.select.setValue(value);
+        ref.select.setValue(value, "set-value");
       },
     });
   }, [fieldName, registerField, defaultValue]);

@@ -22,15 +22,7 @@ const CheckboxInput: React.FC<Props> = ({
     registerField({
       name: fieldName,
       ref: inputRef.current,
-      getValue: (ref: HTMLInputElement) => {
-        return ref.checked;
-      },
-      clearValue: (ref: HTMLInputElement) => {
-        ref.checked = false;
-      },
-      setValue: (ref: HTMLInputElement, value: boolean) => {
-        ref.checked = value;
-      },
+      path: "checked",
     });
   }, [defaultValue, fieldName, registerField]);
   const input = (

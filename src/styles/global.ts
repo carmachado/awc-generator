@@ -1,4 +1,3 @@
-import { cssVar, shade } from "polished";
 import styled, { createGlobalStyle } from "styled-components";
 
 export default createGlobalStyle`
@@ -11,10 +10,8 @@ export default createGlobalStyle`
 
   :root {
     --color-green: #238636;
-    --color-green-dark: ${shade(
-      0.2,
-      cssVar("--color-green", "#238636").toString()
-    )};
+    --color-red: #E85D75;
+    --color-blue: #3db4f2;
     --color-white: #FFF;
     --color-background: #0d1117;
     --color-background-nav: #161b22;
