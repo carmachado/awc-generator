@@ -64,6 +64,10 @@ const ChallengeComponent: React.FC<Props> = ({
         alert.show(<Alert>Challenge copied to clipboard</Alert>, {
           type: "info",
         });
+      } catch (error) {
+        alert.show(<Alert>{error.message}</Alert>, {
+          type: "error",
+        });
       } finally {
         setLoading(false);
       }
