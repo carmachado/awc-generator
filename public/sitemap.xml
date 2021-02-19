@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+<url>
+  <loc>https://awc-generator.vercel.app/</loc>
+  <lastmod>2021-02-19T15:27:44+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://awc-generator.vercel.app/challenges/seasonal</loc>
+  <lastmod>2021-02-19T15:27:44+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://awc-generator.vercel.app/challenges/staff-picks-2020</loc>
+  <lastmod>2021-02-19T15:27:44+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://awc-generator.vercel.app/challenges/january-2021</loc>
+  <lastmod>2021-02-19T15:27:44+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://awc-generator.vercel.app/challenges/february-2021</loc>
+  <lastmod>2021-02-19T15:27:44+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://awc-generator.vercel.app/challenges/beginners</loc>
+  <lastmod>2021-02-19T15:27:44+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://awc-generator.vercel.app/challenges/intermediate</loc>
+  <lastmod>2021-02-19T15:27:44+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://awc-generator.vercel.app/challenges/advanced</loc>
+  <lastmod>2021-02-19T15:27:44+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://awc-generator.vercel.app/challenges/monogatari</loc>
+  <lastmod>2021-02-19T15:27:44+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://awc-generator.vercel.app/challenges/jojo</loc>
+  <lastmod>2021-02-19T15:27:44+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://awc-generator.vercel.app/challenges/initialD</loc>
+  <lastmod>2021-02-19T15:27:44+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://awc-generator.vercel.app/challenges/higurashi</loc>
+  <lastmod>2021-02-19T15:27:44+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://awc-generator.vercel.app/challenges/gintama</loc>
+  <lastmod>2021-02-19T15:27:44+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://awc-generator.vercel.app/challenges/classic</loc>
+  <lastmod>2021-02-19T15:27:44+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://awc-generator.vercel.app/settings</loc>
+  <lastmod>2021-02-19T15:27:44+00:00</lastmod>
+  <priority>0.30</priority>
+</url>
+
+
+</urlset>
