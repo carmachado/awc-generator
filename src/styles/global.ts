@@ -24,6 +24,7 @@ export default createGlobalStyle`
     --color-background-nav-hover: #21262d;
 
     --color-select-selected-option: #409eff;
+    --color-select-hover-option: #1c283b;
     --color-select-focused-option: #f5f7fa;
   }
 
@@ -35,6 +36,7 @@ export default createGlobalStyle`
     --color-input-text: #24292e;
     --color-input-border: trasparent;
     --color-input-placeholder: #8b949e;
+    --color-select-hover-option: #ced9e1;
     --color-primary: #24292e;
   }
 
@@ -110,6 +112,51 @@ export default createGlobalStyle`
 
   button:focus-visible  {
     border: solid 1px var(--color-primary) !important;
+  }
+
+  .react-datepicker, .react-datepicker__header, .react-datepicker__current-month ,
+  .react-datepicker__day, .react-datepicker__day-name,
+  .react-datepicker__today-button, .react-datepicker__year-dropdown, .react-datepicker__month-dropdown {
+    background-color: var(--color-input-background);
+    color: var(--color-input-text);
+  }
+
+  .react-datepicker__month-read-view, .react-datepicker__year-read-view {
+    font-weight: bold;
+  }
+
+  .react-datepicker__navigation--next {
+    border-left-color: var(--color-input-text);
+  }
+
+  .react-datepicker__navigation--previous {
+    border-right-color: var(--color-input-text);
+  }
+
+  .react-datepicker__month-read-view:hover, .react-datepicker__year-read-view:hover, .react-datepicker__navigation:hover {
+    color: var(--color-select-selected-option);
+  }
+
+  .react-datepicker__day:hover, .react-datepicker__year-option:hover, .react-datepicker__month-option:hover {
+    background-color: var(--color-select-hover-option);
+  }
+
+  .react-datepicker__day--selected {
+    background-color: var(--color-select-selected-option);
+    color: var(--color-white);
+  }
+
+  .react-datepicker__year-dropdown-container {
+    align-items: center;
+  }
+
+  .react-datepicker__current-month, .react-datepicker__month-read-view--down-arrow, .react-datepicker__year-read-view--down-arrow {
+    display: none;
+  }
+
+  .react-datepicker__close-icon::after {
+    background-color: var(--color-red);
+    color: var(--color-white);
   }
 `;
 

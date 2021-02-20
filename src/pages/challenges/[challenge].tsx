@@ -26,6 +26,7 @@ import {
 import { DefaultPageProps } from "../../libs/utils/pageTypes";
 import { Alert } from "../../styles/global";
 import runChallenge from "../../libs/anime/runChallenge";
+import DatePicker from "../../components/DatePicker";
 
 interface Props extends DefaultPageProps {
   challenge: Challenge;
@@ -82,7 +83,7 @@ const ChallengeComponent: React.FC<Props> = ({
 
     const data = challengels && JSON.parse(challengels);
 
-    setInitialData({ ...data, user });
+    setInitialData({ startDate: null, ...data, user });
     setLoading(false);
   }, [challenge]);
 
@@ -117,6 +118,7 @@ const ChallengeComponent: React.FC<Props> = ({
             title="Profile Name"
             required
           />
+          <DatePicker name="startDate" placeholderText="Challenge Start Date" />
           {challenge.requirements
             .filter((req) => !req.preset)
             .map((req) => (

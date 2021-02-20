@@ -44,6 +44,7 @@ export interface AnimeChallenge {
 export interface ChallengeInformation {
   name: string;
   user: string;
+  startDate: Date;
   animes: AnimeChallenge[];
 }
 

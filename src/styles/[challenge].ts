@@ -33,6 +33,13 @@ export const Container = styled.div`
       margin-top: 8px;
     }
 
+    .react-datepicker__tab-loop,
+    .react-datepicker__tab-loop *,
+    .react-datepicker__input-container *,
+    .react-datepicker-popper * {
+      margin-top: 0;
+    }
+
     label {
       max-width: 100%;
       white-space: pre-wrap;
