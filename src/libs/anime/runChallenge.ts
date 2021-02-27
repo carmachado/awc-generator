@@ -46,6 +46,11 @@ const runChallenge = async (
         fields = (addFields as string[]).map((f) => [f]);
       }
     }
+
+    if (URL === "" && challenge.autoOccult) {
+      return "";
+    }
+
     const id = getAnimeID(URL);
 
     let information: MediaList = mediaList.find((ml) => ml.media.id === id);
@@ -82,7 +87,7 @@ const runChallenge = async (
 
     const runResults = await Promise.all(promisesRuns);
 
-    result = [...result, ...runResults];
+    result = [...result, ...runResults].filter((run) => run.trim() !== "");
   }
 
   const startDate = formatFuzzyDate({

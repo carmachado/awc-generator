@@ -31,6 +31,7 @@ export interface Challenge {
   name: string;
   link?: string;
   defaultRequired: boolean;
+  autoOccult?: boolean;
   run?: { after?: { type: string }[] };
   requirements: Requirement[];
 }
