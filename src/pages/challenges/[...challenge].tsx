@@ -184,7 +184,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 // This also gets called at build time
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const promiseNavigation = getNavigationInformation();
-  const promiseChallenge = getChallengeInformation(params.challenge as string);
+  const promiseChallenge = getChallengeInformation(
+    (params.challenge as string[]).join("/")
+  );
 
   const [dataChallenge, dataNavigation] = await Promise.all([
     promiseChallenge,
