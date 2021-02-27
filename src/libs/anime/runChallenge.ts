@@ -87,7 +87,7 @@ const runChallenge = async (
 
   const startDate = formatFuzzyDate({
     day: formData.startDate?.getDate(),
-    month: formData.startDate?.getMonth(),
+    month: formData.startDate?.getMonth() + 1,
     year: formData.startDate?.getFullYear(),
   });
 
