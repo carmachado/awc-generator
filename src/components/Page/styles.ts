@@ -64,6 +64,9 @@ export const Navigation = styled.nav`
     align-content: center;
     display: flex;
 
+    * {
+      z-index: 1;
+    }
     .parent {
       float: left;
       color: var(--color-white);

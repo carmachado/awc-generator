@@ -31,6 +31,7 @@ export interface Challenge {
   name: string;
   link?: string;
   defaultRequired: boolean;
+  autoOccult?: boolean;
   run?: { after?: { type: string }[] };
   requirements: Requirement[];
 }
@@ -44,6 +45,7 @@ export interface AnimeChallenge {
 export interface ChallengeInformation {
   name: string;
   user: string;
+  startDate: Date;
   animes: AnimeChallenge[];
 }
 

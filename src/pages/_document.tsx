@@ -51,7 +51,10 @@ export default class MyDocument extends NextDocument<CustomDocumentProps> {
             name="description"
             content="Generates anime information to post on AWC challenges"
           />
-          <meta name="google-site-verification" content="wSQT5hSLI_xedUaXacHDirIusZI0Af0HEfTUB4cHDT0" />
+          <meta
+            name="google-site-verification"
+            content="wSQT5hSLI_xedUaXacHDirIusZI0Af0HEfTUB4cHDT0"
+          />
 
           <link rel="icon" href="/favicon.svg" />
           <link rel="mask-icon" href="/favicon.svg" color="#000000" />

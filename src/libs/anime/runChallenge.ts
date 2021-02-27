@@ -11,6 +11,7 @@ import formatAnimeInformation from "./formatAnimeInformation";
 import * as run from "./run";
 import { getSettings } from "../utils/getLocalInformation";
 import { MediaListReq } from "./run/runTypes";
+import formatFuzzyDate from "../utils/formatFuzzyDate";
 
 const runChallenge = async (
   challenge: Challenge,
@@ -33,6 +34,7 @@ const runChallenge = async (
   ]);
 
   const arrayInformation: MediaListReq[] = [];
+  let finishDate = "";
 
   const promises = animes.map(({ URL, fields: addFields, reqId }) => {
     let fields: string[][];
@@ -44,6 +46,11 @@ const runChallenge = async (
         fields = (addFields as string[]).map((f) => [f]);
       }
     }
+
+    if (URL === "" && challenge.autoOccult) {
+      return "";
+    }
+
     const id = getAnimeID(URL);
 
     let information: MediaList = mediaList.find((ml) => ml.media.id === id);
@@ -52,6 +59,12 @@ const runChallenge = async (
     if (information.media) arrayInformation.push({ ...information, reqId });
     else information = { media: defaultMedia };
 
+    if (
+      finishDate !== "YYYY-MM-DD" &&
+      formatFuzzyDate(information.completedAt) > finishDate
+    ) {
+      finishDate = formatFuzzyDate(information.completedAt);
+    }
     return formatAnimeInformation(
       information,
       challenge.requirements.find((req) => req.id === reqId),
@@ -61,21 +74,43 @@ const runChallenge = async (
 
   let result = await Promise.all(promises);
 
+  const settings = getSettings();
+
   if (challenge.run) {
     const promisesRuns = challenge.run.after.map<Promise<string>>(
       (runChallenge) =>
         run[runChallenge.type]({
           mediaLists: arrayInformation,
-          settings: getSettings(),
+          settings,
         })
     );
 
     const runResults = await Promise.all(promisesRuns);
 
-    result = [...result, ...runResults];
+    result = [...result, ...runResults].filter((run) => run.trim() !== "");
   }
 
-  return `<hr>\n\n${result.join("\n\n").trim()}\n`;
+  const startDate = formatFuzzyDate({
+    day: formData.startDate?.getDate(),
+    month: formData.startDate?.getMonth() + 1,
+    year: formData.startDate?.getFullYear(),
+  });
+
+  if (finishDate !== "YYYY-MM-DD" && startDate > finishDate) {
+    finishDate = startDate;
+  }
+
+  const formattedChallenge = `# __${challenge.name}__
+
+Challenge Start Date: ${startDate}
+Challenge Finish Date: ${finishDate}
+Legend: [${settings.completed}] = Completed ${
+    settings.watching && `[${settings.watching}] = Watching `
+  }[${settings.notCompleted}] = Not Completed
+
+<hr>\n\n${result.join("\n\n").trim()}\n`;
+
+  return formattedChallenge;
 };
 
 export default runChallenge;

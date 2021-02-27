@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import getGenreCollection from "../../../api/getGenreCollection";
 import { SettingsProps } from "../../settings/settingsType";
+import { getEmoji } from "../../utils/getLocalInformation";
 import { getTitle } from "../animeTypes";
 import { MediaListReq, RunFunction, RunParams } from "./runTypes";
 
@@ -13,12 +14,6 @@ interface GenreCheck {
 interface MediaGenre extends MediaListReq {
   genres: GenreCheck[];
 }
-
-const getEmoji = (settings: SettingsProps, status: string): string => {
-  if (status === "COMPLETED") return settings.completed;
-  if (status === "CURRENT" && settings.watching) return settings.watching;
-  return settings.notCompleted;
-};
 
 const getAnimeTitle = (
   settings: SettingsProps,

@@ -26,6 +26,7 @@ import {
 import { DefaultPageProps } from "../../libs/utils/pageTypes";
 import { Alert } from "../../styles/global";
 import runChallenge from "../../libs/anime/runChallenge";
+import DatePicker from "../../components/DatePicker";
 
 interface Props extends DefaultPageProps {
   challenge: Challenge;
@@ -64,6 +65,10 @@ const ChallengeComponent: React.FC<Props> = ({
         alert.show(<Alert>Challenge copied to clipboard</Alert>, {
           type: "info",
         });
+      } catch (error) {
+        alert.show(<Alert>{error.message}</Alert>, {
+          type: "error",
+        });
       } finally {
         setLoading(false);
       }
@@ -78,7 +83,7 @@ const ChallengeComponent: React.FC<Props> = ({
 
     const data = challengels && JSON.parse(challengels);
 
-    setInitialData({ ...data, user });
+    setInitialData({ startDate: null, ...data, user });
     setLoading(false);
   }, [challenge]);
 
@@ -113,6 +118,7 @@ const ChallengeComponent: React.FC<Props> = ({
             title="Profile Name"
             required
           />
+          <DatePicker name="startDate" placeholderText="Challenge Start Date" />
           {challenge.requirements
             .filter((req) => !req.preset)
             .map((req) => (
@@ -178,7 +184,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 // This also gets called at build time
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const promiseNavigation = getNavigationInformation();
-  const promiseChallenge = getChallengeInformation(params.challenge as string);
+  const promiseChallenge = getChallengeInformation(
+    (params.challenge as string[]).join("/")
+  );
 
   const [dataChallenge, dataNavigation] = await Promise.all([
     promiseChallenge,

@@ -36,8 +36,16 @@ export const defaultMedia: Media = {
   genres: [""],
 };
 
+export type MediaListStatus =
+  | "CURRENT"
+  | "PLANNING"
+  | "COMPLETED"
+  | "DROPPED"
+  | "PAUSED"
+  | "REPEATING";
+
 export interface MediaList {
-  status?: string;
+  status?: MediaListStatus;
   progress?: number;
   startedAt?: {
     year: number | null;
