@@ -115,8 +115,8 @@ const runChallenge = async (
 
   let body = `\n<hr>\n\n${result.join("\n\n").trim()}\n`;
 
-  if (settings.centerHeader) header = `~~~${header}~~~`;
-  if (settings.centerBody) body = `~~~${body}~~~`;
+  if (settings.centerHeader) header = `~~~\n${header}~~~`;
+  if (settings.centerBody) body = `~~~${body}\n~~~`;
 
   const formattedChallenge = `${header}${body}`;
 
