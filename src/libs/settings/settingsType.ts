@@ -4,4 +4,6 @@ export interface SettingsProps {
   completed: string;
   previewCards: boolean;
   language: { value: string; label: string };
+  centerHeader: boolean;
+  centerBody: boolean;
 }

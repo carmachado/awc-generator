@@ -103,15 +103,20 @@ const runChallenge = async (
     finishDate = startDate;
   }
 
-  const formattedChallenge = `# __${challenge.name}__
+  let header = `# __${challenge.name}__
 
-Challenge Start Date: ${startDate}
-Challenge Finish Date: ${finishDate}
-Legend: [${settings.completed}] = Completed ${
+  Challenge Start Date: ${startDate}
+  Challenge Finish Date: ${finishDate}
+  Legend: [${settings.completed}] = Completed ${
     settings.watching && `[${settings.watching}] = Watching `
-  }[${settings.notCompleted}] = Not Completed
+  }[${settings.notCompleted}] = Not Completed\n`;
 
-<hr>\n\n${result.join("\n\n").trim()}\n`;
+  let body = `\n<hr>\n\n${result.join("\n\n").trim()}\n`;
+
+  if (settings.centerHeader) header = `~~~${header}~~~`;
+  if (settings.centerBody) body = `~~~${body}~~~`;
+
+  const formattedChallenge = `${header}${body}`;
 
   return formattedChallenge;
 };

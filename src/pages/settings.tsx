@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useRef } from "react";
 import { Form } from "@unform/web";
 import { GetStaticProps } from "next";
 import { useAlert } from "react-alert";
@@ -86,11 +86,23 @@ const HomePage: React.FC<DefaultPageProps> = ({
           </section>
           <h2>Layout</h2>
           <section className="layout">
-            <CheckboxInput
-              name="previewCards"
-              label="Use preview cards"
-              underDiv
-            />
+            <div className="checks-layout">
+              <CheckboxInput
+                name="previewCards"
+                label="Use preview cards"
+                underDiv
+              />
+              <CheckboxInput
+                name="centerHeader"
+                label="Center the header"
+                underDiv
+              />
+              <CheckboxInput
+                name="centerBody"
+                label="Center the body"
+                underDiv
+              />
+            </div>
             <Select
               name="language"
               label="Title Language"

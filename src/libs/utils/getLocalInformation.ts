@@ -11,6 +11,8 @@ export const getSettings = (): SettingsProps => {
     completed: "X",
     previewCards: false,
     language: { value: "romaji", label: "Romaji" },
+    centerHeader: false,
+    centerBody: false,
   };
 
   if (lsSettings) return JSON.parse(lsSettings);
