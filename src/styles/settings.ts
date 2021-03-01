@@ -52,6 +52,15 @@ export const Container = styled.div`
     align-items: flex-start;
     flex-direction: column;
 
+    .checks-layout {
+      display: flex;
+      width: 100%;
+      flex-direction: row;
+      div + div {
+        margin-left: 32px;
+      }
+    }
+
     input {
       width: 16px;
       margin-right: 8px;
@@ -67,5 +76,19 @@ export const Container = styled.div`
   button {
     width: 160px;
     margin-bottom: 32px;
+  }
+
+  @media screen and (max-width: 700px) {
+    .layout {
+      .checks-layout {
+        flex-direction: column;
+        div {
+          justify-content: left;
+        }
+        div + div {
+          margin-left: 0;
+        }
+      }
+    }
   }
 `;

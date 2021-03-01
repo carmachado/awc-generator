@@ -40,6 +40,7 @@ export interface AnimeChallenge {
   reqId: number;
   URL: string;
   fields?: string[][] | string[];
+  manualField?: string;
 }
 
 export interface ChallengeInformation {

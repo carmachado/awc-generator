@@ -36,41 +36,44 @@ const runChallenge = async (
   const arrayInformation: MediaListReq[] = [];
   let finishDate = "";
 
-  const promises = animes.map(({ URL, fields: addFields, reqId }) => {
-    let fields: string[][];
+  const promises = animes.map(
+    ({ URL, fields: addFields, reqId, manualField }) => {
+      let fields: string[][];
 
-    if (addFields) {
-      if (Array.isArray(addFields[0])) {
-        fields = addFields as string[][];
-      } else {
-        fields = (addFields as string[]).map((f) => [f]);
+      if (addFields) {
+        if (Array.isArray(addFields[0])) {
+          fields = addFields as string[][];
+        } else {
+          fields = (addFields as string[]).map((f) => [f]);
+        }
       }
+
+      if (URL === "" && challenge.autoOccult) {
+        return "";
+      }
+
+      const id = getAnimeID(URL);
+
+      let information: MediaList = mediaList.find((ml) => ml.media.id === id);
+      if (!information) information = { media: media.find((m) => m.id === id) };
+
+      if (information.media) arrayInformation.push({ ...information, reqId });
+      else information = { media: defaultMedia };
+
+      if (
+        finishDate !== "YYYY-MM-DD" &&
+        formatFuzzyDate(information.completedAt) > finishDate
+      ) {
+        finishDate = formatFuzzyDate(information.completedAt);
+      }
+      return formatAnimeInformation(
+        information,
+        challenge.requirements.find((req) => req.id === reqId),
+        fields,
+        manualField
+      );
     }
-
-    if (URL === "" && challenge.autoOccult) {
-      return "";
-    }
-
-    const id = getAnimeID(URL);
-
-    let information: MediaList = mediaList.find((ml) => ml.media.id === id);
-    if (!information) information = { media: media.find((m) => m.id === id) };
-
-    if (information.media) arrayInformation.push({ ...information, reqId });
-    else information = { media: defaultMedia };
-
-    if (
-      finishDate !== "YYYY-MM-DD" &&
-      formatFuzzyDate(information.completedAt) > finishDate
-    ) {
-      finishDate = formatFuzzyDate(information.completedAt);
-    }
-    return formatAnimeInformation(
-      information,
-      challenge.requirements.find((req) => req.id === reqId),
-      fields
-    );
-  });
+  );
 
   let result = await Promise.all(promises);
 
@@ -102,15 +105,20 @@ const runChallenge = async (
     finishDate = startDate;
   }
 
-  const formattedChallenge = `# __${challenge.name}__
+  let header = `# __${challenge.name}__
 
-Challenge Start Date: ${startDate}
-Challenge Finish Date: ${finishDate}
-Legend: [${settings.completed}] = Completed ${
+  Challenge Start Date: ${startDate}
+  Challenge Finish Date: ${finishDate}
+  Legend: [${settings.completed}] = Completed ${
     settings.watching && `[${settings.watching}] = Watching `
-  }[${settings.notCompleted}] = Not Completed
+  }[${settings.notCompleted}] = Not Completed\n`;
 
-<hr>\n\n${result.join("\n\n").trim()}\n`;
+  let body = `\n<hr>\n\n${result.join("\n\n").trim()}\n`;
+
+  if (settings.centerHeader) header = `~~~\n${header}~~~`;
+  if (settings.centerBody) body = `~~~${body}\n~~~`;
+
+  const formattedChallenge = `${header}${body}`;
 
   return formattedChallenge;
 };
