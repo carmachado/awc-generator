@@ -6,7 +6,7 @@ import { StyledInput } from "./styles";
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   label?: string | undefined;
-  underDiv?: boolean;
+  underDiv?: boolean | "children";
 }
 
 const Input: React.FC<Props> = ({
@@ -14,6 +14,7 @@ const Input: React.FC<Props> = ({
   label = "",
   type = "input",
   underDiv = false,
+  children,
   ...rest
 }: Props) => {
   const inputRef = useRef(null);
@@ -26,23 +27,46 @@ const Input: React.FC<Props> = ({
     });
   }, [fieldName, registerField]);
 
+  const labelResult = label && <label htmlFor={fieldName}>{label}</label>;
+  const errorResult = error && <span className="error">{error}</span>;
+
   const input = (
+    <StyledInput
+      id={fieldName}
+      ref={inputRef}
+      defaultValue={defaultValue}
+      type={type}
+      {...rest}
+    />
+  );
+  if (underDiv === true)
+    return (
+      <div>
+        {labelResult}
+        {input}
+        {errorResult}
+      </div>
+    );
+
+  if (underDiv === "children")
+    return (
+      <>
+        {labelResult}
+        <div>
+          {input}
+          {children}
+        </div>
+        {errorResult}
+      </>
+    );
+
+  return (
     <>
-      {label && <label htmlFor={fieldName}>{label}</label>}
-      <StyledInput
-        id={fieldName}
-        ref={inputRef}
-        defaultValue={defaultValue}
-        type={type}
-        {...rest}
-      />
-      {error && <span className="error">{error}</span>}
+      {labelResult}
+      {input}
+      {errorResult}
     </>
   );
-
-  if (underDiv) return <div>{input}</div>;
-
-  return <>{input}</>;
 };
 
 Input.defaultProps = {

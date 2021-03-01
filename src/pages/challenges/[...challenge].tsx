@@ -6,12 +6,15 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import ReactLoading from "react-loading";
 import { useAlert } from "react-alert";
+import { IoMdAddCircleOutline, IoMdRemoveCircleOutline } from "react-icons/io";
 
-import { Container, Title } from "../../styles/[challenge]";
+import { Container, Title, AnimeDiv } from "../../styles/[...challenge]";
 
 import {
   setItemLocalStorage,
   getItemLocalStorage,
+  getChallengeLocalStorage,
+  setChallengeLocalStorage,
 } from "../../libs/utils/lsnext";
 
 import Page from "../../components/Page";
@@ -27,6 +30,7 @@ import { DefaultPageProps } from "../../libs/utils/pageTypes";
 import { Alert } from "../../styles/global";
 import runChallenge from "../../libs/anime/runChallenge";
 import DatePicker from "../../components/DatePicker";
+import { getDigits } from "../../libs/utils/formatFuzzyDate";
 
 interface Props extends DefaultPageProps {
   challenge: Challenge;
@@ -42,15 +46,14 @@ const ChallengeComponent: React.FC<Props> = ({
   const formRef = useRef(null);
   const [initialData, setInitialData] = useState(null);
   const alert = useAlert();
+  const [openedManualField, setOpenedManualField] = useState([]);
 
   const handleSubmit = useCallback(
     async (formData: ChallengeInformation) => {
       const { user } = formData;
 
-      setItemLocalStorage(
-        `@awc-generator:${challenge.name}`,
-        JSON.stringify(formData)
-      );
+      setChallengeLocalStorage(challenge.name, { formData, openedManualField });
+
       setItemLocalStorage("@awc-generator:username", user);
 
       try {
@@ -73,19 +76,40 @@ const ChallengeComponent: React.FC<Props> = ({
         setLoading(false);
       }
     },
-    [challenge, alert]
+    [challenge, alert, openedManualField]
+  );
+
+  const toggleOpenedManualField = useCallback(
+    (id: string): void => {
+      if (openedManualField.includes(id))
+        setOpenedManualField(openedManualField.filter((item) => item !== id));
+      else setOpenedManualField([...openedManualField, id]);
+    },
+    [openedManualField]
   );
 
   useEffect(() => {
     const user = getItemLocalStorage("@awc-generator:username");
 
-    const challengels = getItemLocalStorage(`@awc-generator:${challenge.name}`);
+    const data = getChallengeLocalStorage(challenge.name);
 
-    const data = challengels && JSON.parse(challengels);
+    const { formData, openedManualField } = data;
 
-    setInitialData({ startDate: null, ...data, user });
+    setOpenedManualField(openedManualField || []);
+
+    setInitialData({
+      startDate: null,
+      ...(formData || data),
+      user,
+    });
     setLoading(false);
   }, [challenge]);
+
+  useEffect(() => {
+    const data = getChallengeLocalStorage(challenge.name);
+
+    setChallengeLocalStorage(challenge.name, { ...data, openedManualField });
+  }, [openedManualField, challenge]);
 
   if (router.isFallback) {
     return (
@@ -123,12 +147,29 @@ const ChallengeComponent: React.FC<Props> = ({
             .filter((req) => !req.preset)
             .map((req) => (
               <Scope key={req.id} path={`animes[${req.id}]`}>
-                <Input
-                  name="URL"
-                  label={`${req.id}) ${req.question}`}
-                  placeholder="Anime URL"
-                  required={challenge.defaultRequired || req.required}
-                />
+                <AnimeDiv role="toolbar">
+                  <Input
+                    name="URL"
+                    label={`${getDigits(req.id, 2)}) ${req.question}`}
+                    placeholder="Anime URL"
+                    underDiv="children"
+                    required={challenge.defaultRequired || req.required}
+                  >
+                    <button
+                      name="test"
+                      type="button"
+                      onClick={() => {
+                        toggleOpenedManualField(req.id.toString());
+                      }}
+                    >
+                      {openedManualField.includes(req.id.toString()) ? (
+                        <IoMdRemoveCircleOutline />
+                      ) : (
+                        <IoMdAddCircleOutline />
+                      )}
+                    </button>
+                  </Input>
+                </AnimeDiv>
                 {req.additionalInformation?.map((inf, idx) => {
                   if (["Link", "Label"].includes(inf.type)) {
                     if (inf.fields) {
@@ -159,6 +200,12 @@ const ChallengeComponent: React.FC<Props> = ({
                   }
                   return null;
                 })}
+                {openedManualField.includes(req.id.toString()) && (
+                  <Input
+                    name="manualField"
+                    placeholder="Other additional information"
+                  />
+                )}
               </Scope>
             ))}
           <Button type="submit">Generate information</Button>

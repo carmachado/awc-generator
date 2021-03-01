@@ -39,7 +39,8 @@ const formatAdditionalInformation = async (
 const formatAnimeInformation = async (
   information: MediaList,
   requirement?: Requirement,
-  fields?: string[][]
+  fields?: string[][],
+  manualField?: string
 ): Promise<string> => {
   const {
     status,
@@ -81,6 +82,8 @@ const formatAnimeInformation = async (
     );
 
     if (additionalInformation) formattedAnime += ` // ${additionalInformation}`;
+
+    if (manualField) formattedAnime += ` // ${manualField}`;
   }
 
   return formattedAnime;

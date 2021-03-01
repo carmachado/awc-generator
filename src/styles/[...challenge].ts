@@ -65,3 +65,29 @@ export const Container = styled.div`
     }
   }
 `;
+
+export const AnimeDiv = styled.div`
+  div {
+    margin-top: 0;
+    flex-grow: 100;
+    display: flex;
+    button {
+      align-self: flex-end !important;
+      width: 40px;
+      height: 32px;
+      background-color: transparent;
+      border: 0;
+
+      svg {
+        height: 32px;
+        width: 32px;
+        margin-top: 0;
+        color: var(--color-primary);
+
+        &:hover {
+          filter: brightness(80%);
+        }
+      }
+    }
+  }
+`;
