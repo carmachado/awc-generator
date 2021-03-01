@@ -87,8 +87,10 @@ const runChallenge = async (
 
     const runResults = await Promise.all(promisesRuns);
 
-    result = [...result, ...runResults].filter((run) => run.trim() !== "");
+    result = [...result, ...runResults];
   }
+
+  result = result.filter((run) => run.trim() !== "");
 
   const startDate = formatFuzzyDate({
     day: formData.startDate?.getDate(),
