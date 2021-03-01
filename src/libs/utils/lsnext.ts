@@ -18,6 +18,8 @@ export const getChallengeLocalStorage = (name: string): ChallengeStorage => {
 
   const data = challengels && JSON.parse(challengels);
 
+  if (!data) return { formData: data, openedManualField: [] };
+
   const { formData } = data;
 
   if (formData) return data;
