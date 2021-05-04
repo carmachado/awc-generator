@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import getGenreCollection from "../../../api/getGenreCollection";
 import { SettingsProps } from "../../settings/settingsType";
+import { getDigits } from "../../utils/formatFuzzyDate";
 import { getEmoji } from "../../utils/getLocalInformation";
 import { getTitle } from "../animeTypes";
 import { MediaListReq, RunFunction, RunParams } from "./runTypes";
@@ -76,7 +77,7 @@ const GenreCheckList: RunFunction = async ({
   resortedGenre.forEach(({ anime, genre }) => {
     if (anime) {
       const emoji = getEmoji(settings, anime.status);
-      result += `\n[${emoji}] ${genre}: #${anime.reqId < 10 ? "0" : ""}${
+      result += `\n[${emoji}] ${genre}: #${getDigits(anime.reqId, 2)}${
         anime.reqId
       }\n${getAnimeTitle(
         settings,

@@ -1,6 +1,6 @@
 import { FuzzyDate } from "../anime/animeTypes";
 
-export function getDigits(value: number, digits: number): string {
+export function getDigits(value: string | number, digits: number): string {
   const repeat = digits - value.toString().length;
   let result = "";
   for (let i = 0; i < repeat; i += 1) {

@@ -46,8 +46,14 @@ export default createGlobalStyle`
     -webkit-font-smoothing: antialiased;
   }
 
-  body, input, button, textarea {
+  body, input, button, textarea, label a {
     font: 16px "Nunito", sans-serif;
+  }
+
+  label a {
+    text-decoration: none;
+    color: var(--color-blue);
+    font-weight: bold;
   }
 
   h1, h2, h3, h4 {

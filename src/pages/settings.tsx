@@ -14,7 +14,6 @@ import Input from "../components/Input";
 import Select from "../components/Select";
 import Button from "../components/Button";
 import CheckboxInput from "../components/CheckboxInput";
-import { capitalizeFirstLetter } from "../libs/utils/capitalizeFirstLetter";
 import { Alert } from "../styles/global";
 import { DefaultPageProps } from "../libs/utils/pageTypes";
 import {
@@ -34,10 +33,7 @@ const HomePage: React.FC<DefaultPageProps> = ({
     async (formData) => {
       const data = {
         ...formData,
-        language: {
-          value: formData.language,
-          label: capitalizeFirstLetter(formData.language),
-        },
+        language: formData.language,
       };
 
       setItemLocalStorage("@awc-generator:settings", JSON.stringify(data));
@@ -106,6 +102,7 @@ const HomePage: React.FC<DefaultPageProps> = ({
             <Select
               name="language"
               label="Title Language"
+              className="select"
               underDiv
               options={[
                 { value: "romaji", label: "Romaji" },

@@ -3,6 +3,11 @@ import { useField } from "@unform/core";
 import { OptionTypeBase, Props as SelectProps } from "react-select";
 import { DivSelect, MultiSelect } from "./styles";
 
+export interface SelectOption {
+  label: string;
+  value: string;
+}
+
 interface Props extends SelectProps<OptionTypeBase> {
   name: string;
   label?: string | undefined;
@@ -25,7 +30,7 @@ const Select: React.FC<Props> = ({
         if (!ref.state.value) {
           return "";
         }
-        return ref.state.value.value;
+        return ref.state.value;
       },
       setValue: (ref, value) => {
         ref.select.setValue(value, "set-value");

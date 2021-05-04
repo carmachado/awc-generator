@@ -1,3 +1,4 @@
+import { AlertCustomOptionsWithType } from "react-alert";
 import { defaultMedia, MediaList } from "../../api/types";
 import getMediaAll from "../../api/getMediaAll";
 import getMediaListAll from "../../api/getMediaListAll";
@@ -12,19 +13,74 @@ import * as run from "./run";
 import { getSettings } from "../utils/getLocalInformation";
 import { MediaListReq } from "./run/runTypes";
 import formatFuzzyDate from "../utils/formatFuzzyDate";
+import { Alert } from "../../styles/global";
+
+interface Alert {
+  message: string;
+  options: AlertCustomOptionsWithType;
+}
+interface ChallengeCode {
+  code: string;
+  alerts: Alert[];
+}
+
+const compareAnimeChallenges = (
+  a: AnimeChallenge,
+  b: AnimeChallenge
+): number => {
+  return `${a.mode?.value}-${
+    a.replacement ? a.replacement.value : a.requirement.id
+  }`.localeCompare(
+    `${b.mode?.value}-${b.replacement ? b.replacement.value : b.requirement.id}`
+  );
+};
+
+const getAlerts = (
+  challanges: AnimeChallenge[],
+  challenge: Challenge
+): Alert[] => {
+  const alerts: Alert[] = [];
+
+  if (challenge.modes) {
+    const modesQty = {};
+
+    challanges.forEach(({ mode: { value } }) => {
+      if (!modesQty[value]) modesQty[value] = 0;
+      modesQty[value] += 1;
+    });
+
+    challenge.modes.forEach((mode) => {
+      if (modesQty[mode.value] > 0 && modesQty[mode.value] < mode.quantity) {
+        alerts.push({
+          message: `Expected ${mode.quantity} animes to ${
+            mode.label
+          } mode, but found ${modesQty[mode.value]}`,
+          options: { type: "error", timeout: 10000 },
+        });
+      }
+    });
+  }
+
+  return alerts;
+};
 
 const runChallenge = async (
   challenge: Challenge,
   formData: ChallengeInformation
-): Promise<string> => {
-  const animes: AnimeChallenge[] = challenge.requirements.map(
-    ({ id, preset }) => {
-      const data = formData.animes && formData.animes[id];
-      if (data) return { ...data, reqId: id };
+): Promise<ChallengeCode> => {
+  const challegenCode: ChallengeCode = {
+    code: "",
+    alerts: [],
+  };
 
-      return { URL: preset, reqId: id };
-    }
-  );
+  const animes: AnimeChallenge[] = challenge.requirements.map((requirement) => {
+    const data =
+      formData.animes &&
+      formData.animes.find((data) => data.requirement.id === requirement.id);
+    if (data) return { ...data, requirement };
+
+    return { URL: requirement.preset, requirement };
+  });
 
   const ids = animes.map((anime) => getAnimeID(anime.URL));
 
@@ -36,8 +92,12 @@ const runChallenge = async (
   const arrayInformation: MediaListReq[] = [];
   let finishDate = "";
 
-  const promises = animes.map(
-    ({ URL, fields: addFields, reqId, manualField }) => {
+  const sortedAnime = animes.sort(compareAnimeChallenges);
+
+  challegenCode.alerts = getAlerts(sortedAnime, challenge);
+
+  const promises = sortedAnime.map(
+    ({ URL, fields: addFields, requirement, manualField, mode }, index) => {
       let fields: string[][];
 
       if (addFields) {
@@ -52,12 +112,20 @@ const runChallenge = async (
         return "";
       }
 
+      const showMode =
+        index === 0
+          ? challenge.modes !== undefined
+          : mode &&
+            sortedAnime[index - 1].mode &&
+            mode.value !== sortedAnime[index - 1].mode.value;
+
       const id = getAnimeID(URL);
 
       let information: MediaList = mediaList.find((ml) => ml.media.id === id);
       if (!information) information = { media: media.find((m) => m.id === id) };
 
-      if (information.media) arrayInformation.push({ ...information, reqId });
+      if (information.media)
+        arrayInformation.push({ ...information, reqId: requirement.id });
       else information = { media: defaultMedia };
 
       if (
@@ -68,9 +136,11 @@ const runChallenge = async (
       }
       return formatAnimeInformation(
         information,
-        challenge.requirements.find((req) => req.id === reqId),
+        requirement,
         fields,
-        manualField
+        manualField,
+        challenge.modes?.find((m) => m.value === mode.value),
+        showMode
       );
     }
   );
@@ -120,7 +190,8 @@ const runChallenge = async (
 
   const formattedChallenge = `${header}${body}`;
 
-  return formattedChallenge;
+  challegenCode.code = formattedChallenge;
+  return challegenCode;
 };
 
 export default runChallenge;

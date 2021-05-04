@@ -29,15 +29,20 @@ export const Container = styled.div`
     justify-content: center;
     max-width: 100%;
 
-    * {
+    label {
       margin-top: 8px;
     }
 
     .react-datepicker__tab-loop,
     .react-datepicker__tab-loop *,
     .react-datepicker__input-container *,
-    .react-datepicker-popper * {
+    .react-datepicker-popper *,
+    .select * {
       margin-top: 0;
+    }
+
+    .react-select__indicator-separator {
+      margin-top: 8px;
     }
 
     label {

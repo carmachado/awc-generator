@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import ReactDatePicker, { ReactDatePickerProps } from "react-datepicker";
+import { ReactDatePickerProps } from "react-datepicker";
 import { useField } from "@unform/core";
 import "react-datepicker/dist/react-datepicker.css";
 import { StyledDatePicker } from "./styles";
@@ -9,7 +9,7 @@ interface Props extends Omit<ReactDatePickerProps, "onChange"> {
 }
 const DatePicker: React.FC<Props> = ({ name, ...rest }: Props) => {
   const datepickerRef = useRef(null);
-  const { fieldName, registerField, defaultValue, error } = useField(name);
+  const { fieldName, registerField, defaultValue } = useField(name);
   const [date, setDate] = useState(defaultValue || null);
 
   useEffect(() => {
@@ -20,7 +20,8 @@ const DatePicker: React.FC<Props> = ({ name, ...rest }: Props) => {
         ref.clear();
       },
       setValue: (ref, value) => {
-        ref.setSelected(value);
+        if (value) ref.setSelected(new Date(value.toString()));
+        else ref.clear();
       },
       getValue: (ref) => {
         return ref.props.selected;

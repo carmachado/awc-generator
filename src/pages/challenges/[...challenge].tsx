@@ -31,6 +31,8 @@ import { Alert } from "../../styles/global";
 import runChallenge from "../../libs/anime/runChallenge";
 import DatePicker from "../../components/DatePicker";
 import { getDigits } from "../../libs/utils/formatFuzzyDate";
+import Select from "../../components/Select";
+import getRequirementDescripton from "../../libs/utils/getRequirementDescripton";
 
 interface Props extends DefaultPageProps {
   challenge: Challenge;
@@ -44,7 +46,6 @@ const ChallengeComponent: React.FC<Props> = ({
   const [animeData, setAnimeData] = useState("");
   const [loading, setLoading] = useState(false);
   const formRef = useRef(null);
-  const [initialData, setInitialData] = useState(null);
   const alert = useAlert();
   const [openedManualField, setOpenedManualField] = useState([]);
 
@@ -52,18 +53,33 @@ const ChallengeComponent: React.FC<Props> = ({
     async (formData: ChallengeInformation) => {
       const { user } = formData;
 
-      setChallengeLocalStorage(challenge.name, { formData, openedManualField });
+      const data = {
+        ...formData,
+        animes: formData.animes?.map((anime, i) => ({
+          ...anime,
+          requirement: challenge.requirements[i],
+        })),
+      };
+
+      setChallengeLocalStorage(challenge.name, {
+        formData: data,
+        openedManualField,
+      });
 
       setItemLocalStorage("@awc-generator:username", user);
 
       try {
         setLoading(true);
 
-        const result = await runChallenge(challenge, formData);
+        const challengeCode = await runChallenge(challenge, data);
 
-        setAnimeData(result);
+        setAnimeData(challengeCode.code);
 
-        navigator.clipboard.writeText(result);
+        navigator.clipboard.writeText(challengeCode.code);
+
+        challengeCode.alerts.forEach((al) =>
+          alert.show(<Alert>{al.message}</Alert>, al.options)
+        );
 
         alert.show(<Alert>Challenge copied to clipboard</Alert>, {
           type: "info",
@@ -72,6 +88,7 @@ const ChallengeComponent: React.FC<Props> = ({
         alert.show(<Alert>{error.message}</Alert>, {
           type: "error",
         });
+        throw error;
       } finally {
         setLoading(false);
       }
@@ -95,13 +112,20 @@ const ChallengeComponent: React.FC<Props> = ({
 
     const { formData, openedManualField } = data;
 
+    if (formData?.animes?.length > challenge.requirements.length) {
+      formData.animes.forEach((anime, i) => {
+        if (i > 0) formData.animes[i - 1] = formData.animes[i];
+      });
+    }
+
     setOpenedManualField(openedManualField || []);
 
-    setInitialData({
+    formRef.current.setData({
       startDate: null,
-      ...(formData || data),
+      ...formData,
       user,
     });
+
     setLoading(false);
   }, [challenge]);
 
@@ -134,7 +158,7 @@ const ChallengeComponent: React.FC<Props> = ({
             <ReactLoading type="spin" height="10%" width="10%" />
           </div>
         )}
-        <Form ref={formRef} onSubmit={handleSubmit} initialData={initialData}>
+        <Form ref={formRef} onSubmit={handleSubmit}>
           <Input
             name="user"
             type="text"
@@ -145,12 +169,14 @@ const ChallengeComponent: React.FC<Props> = ({
           <DatePicker name="startDate" placeholderText="Challenge Start Date" />
           {challenge.requirements
             .filter((req) => !req.preset)
-            .map((req) => (
-              <Scope key={req.id} path={`animes[${req.id}]`}>
+            .map((req, i) => (
+              <Scope key={req.id} path={`animes[${i}]`}>
                 <AnimeDiv role="toolbar">
                   <Input
                     name="URL"
-                    label={`${getDigits(req.id, 2)}) ${req.question}`}
+                    label={`${getDigits(req.id, 2)}) ${getRequirementDescripton(
+                      req
+                    )}`}
                     placeholder="Anime URL"
                     underDiv="children"
                     required={challenge.defaultRequired || req.required}
@@ -200,6 +226,26 @@ const ChallengeComponent: React.FC<Props> = ({
                   }
                   return null;
                 })}
+                {req.type === "bonus" && (
+                  <Select
+                    className="select"
+                    name="replacement"
+                    options={challenge.requirements
+                      .filter((r) => r.type !== "bonus")
+                      .map((r) => ({ value: r.id, label: r.id }))}
+                    isClearable
+                    placeholder="Requeriment to replace"
+                  />
+                )}
+                {challenge.modes && (
+                  <Select
+                    className="select"
+                    name="mode"
+                    options={challenge.modes}
+                    isClearable
+                    placeholder="Mode"
+                  />
+                )}
                 {openedManualField.includes(req.id.toString()) && (
                   <Input
                     name="manualField"

@@ -2,7 +2,7 @@ import { MediaList } from "../../../api/types";
 import { SettingsProps } from "../../settings/settingsType";
 
 export interface MediaListReq extends MediaList {
-  reqId: number;
+  reqId: string;
 }
 
 export interface RunParams {
