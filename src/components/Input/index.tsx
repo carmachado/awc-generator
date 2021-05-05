@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useRef, useEffect, InputHTMLAttributes } from "react";
 import { useField } from "@unform/core";
 
@@ -27,7 +28,9 @@ const Input: React.FC<Props> = ({
     });
   }, [fieldName, registerField]);
 
-  const labelResult = label && <label htmlFor={fieldName}>{label}</label>;
+  const labelResult = label && (
+    <label htmlFor={fieldName} dangerouslySetInnerHTML={{ __html: label }} />
+  );
   const errorResult = error && <span className="error">{error}</span>;
 
   const input = (

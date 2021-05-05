@@ -19,7 +19,7 @@ export const Container = styled.div`
     justify-content: center;
     flex: 1;
 
-    * {
+    label {
       margin-top: 8px;
     }
 

@@ -1,4 +1,4 @@
-import { getTitle, Requirement } from "./animeTypes";
+import { ChallengeMode, getTitle, Requirement } from "./animeTypes";
 import { MediaList } from "../../api/types";
 import { SettingsProps } from "../settings/settingsType";
 import { runAdditionalInformation } from "./additionalInformation/runAdditionalInformation";
@@ -40,7 +40,9 @@ const formatAnimeInformation = async (
   information: MediaList,
   requirement?: Requirement,
   fields?: string[][],
-  manualField?: string
+  manualField?: string,
+  mode?: ChallengeMode,
+  showMode?: boolean
 ): Promise<string> => {
   const {
     status,
@@ -73,6 +75,9 @@ const formatAnimeInformation = async (
 
     if (requirement.splitter)
       formattedAnime = `${requirement.splitter}\n${formattedAnime}`;
+
+    if (showMode)
+      formattedAnime = `__Mode: ${mode?.label}__\n\n${formattedAnime}`;
 
     const additionalInformation = await formatAdditionalInformation(
       information,

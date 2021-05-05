@@ -1,4 +1,5 @@
 import { MediaList, MediaTitle } from "../../api/types";
+import { SelectOption } from "../../components/Select";
 import { SettingsProps } from "../settings/settingsType";
 
 export interface FuzzyDate {
@@ -20,11 +21,17 @@ export interface AdditionalInformation {
 
 export interface Requirement {
   splitter?: string;
-  id: number;
+  id: string;
   question: string;
+  description?: string;
   additionalInformation: AdditionalInformation[];
   required?: boolean;
   preset?: string;
+  type?: "bonus";
+}
+
+export interface ChallengeMode extends SelectOption {
+  quantity: number;
 }
 
 export interface Challenge {
@@ -33,14 +40,18 @@ export interface Challenge {
   defaultRequired: boolean;
   autoOccult?: boolean;
   run?: { after?: { type: string }[] };
+  type?: "genre";
   requirements: Requirement[];
+  modes: ChallengeMode[];
 }
 
 export interface AnimeChallenge {
-  reqId: number;
+  requirement: Requirement;
   URL: string;
   fields?: string[][] | string[];
   manualField?: string;
+  mode?: SelectOption;
+  replacement?: SelectOption;
 }
 
 export interface ChallengeInformation {
@@ -54,7 +65,7 @@ export interface AnimeInformation {
   anime: string;
   user: string;
   challenge?: Challenge;
-  reqId?: number;
+  reqId?: string;
   fields?: string[][];
 }
 export interface AdditionalInformationFields extends AdditionalInformation {

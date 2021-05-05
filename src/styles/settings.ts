@@ -78,6 +78,14 @@ export const Container = styled.div`
     margin-bottom: 32px;
   }
 
+  .select * {
+    margin-top: 0;
+  }
+
+  .react-select__indicator-separator {
+    margin-top: 8px;
+  }
+
   @media screen and (max-width: 700px) {
     .layout {
       .checks-layout {
