@@ -148,7 +148,9 @@ const ChallengeComponent: React.FC<Props> = ({
       <Container>
         <Title>
           {challenge.link ? (
-            <a href={challenge.link}>{challenge.name}</a>
+            <a target="_blank" rel="noopener noreferrer" href={challenge.link}>
+              {challenge.name}
+            </a>
           ) : (
             challenge.name
           )}
@@ -184,6 +186,7 @@ const ChallengeComponent: React.FC<Props> = ({
                     <button
                       name="test"
                       type="button"
+                      tabIndex={-1}
                       onClick={() => {
                         toggleOpenedManualField(req.id.toString());
                       }}
