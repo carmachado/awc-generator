@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import getGenreCollection from "../../../api/getGenreCollection";
 import { SettingsProps } from "../../settings/settingsType";
-import { getDigits } from "../../utils/formatFuzzyDate";
+import formatFuzzyDate, { getDigits } from "../../utils/formatFuzzyDate";
 import { getEmoji } from "../../utils/getLocalInformation";
 import { getTitle } from "../animeTypes";
 import { MediaListReq, RunFunction, RunParams } from "./runTypes";
@@ -30,6 +30,8 @@ const getAnimeTitle = (
 const GenreCheckList: RunFunction = async ({
   mediaLists,
   settings,
+  challenge,
+  startDate,
 }: RunParams) => {
   const genreCollection = await getGenreCollection();
 
@@ -76,7 +78,12 @@ const GenreCheckList: RunFunction = async ({
 
   resortedGenre.forEach(({ anime, genre }) => {
     if (anime) {
-      const emoji = getEmoji(settings, anime.status);
+      const emoji = getEmoji(
+        settings,
+        anime.status,
+        challenge.previouslyCompleted &&
+          startDate > formatFuzzyDate(anime.completedAt)
+      );
       result += `\n[${emoji}] ${genre}: #${getDigits(anime.reqId, 2)}${
         anime.reqId
       }\n${getAnimeTitle(

@@ -91,10 +91,17 @@ const runChallenge = async (
 
   const arrayInformation: MediaListReq[] = [];
   let finishDate = "";
+  let showPrevCompletedLegend = false;
 
   const sortedAnime = animes.sort(compareAnimeChallenges);
 
   challegenCode.alerts = getAlerts(sortedAnime, challenge);
+
+  const startDate = formatFuzzyDate({
+    day: formData.startDate?.getDate(),
+    month: formData.startDate?.getMonth() + 1,
+    year: formData.startDate?.getFullYear(),
+  });
 
   const promises = sortedAnime.map(
     ({ URL, fields: addFields, requirement, manualField, mode }, index) => {
@@ -134,13 +141,21 @@ const runChallenge = async (
       ) {
         finishDate = formatFuzzyDate(information.completedAt);
       }
+
+      const prevCompleted =
+        challenge.previouslyCompleted &&
+        startDate > formatFuzzyDate(information.completedAt) &&
+        formatFuzzyDate(information.completedAt) !== "YYYY-MM-DD";
+      if (prevCompleted) showPrevCompletedLegend = true;
+
       return formatAnimeInformation(
         information,
         requirement,
         fields,
         manualField,
         challenge.modes?.find((m) => m.value === mode.value),
-        showMode
+        showMode,
+        prevCompleted
       );
     }
   );
@@ -155,6 +170,8 @@ const runChallenge = async (
         run[runChallenge.type]({
           mediaLists: arrayInformation,
           settings,
+          challenge,
+          startDate,
         })
     );
 
@@ -165,23 +182,21 @@ const runChallenge = async (
 
   result = result.filter((run) => run.trim() !== "");
 
-  const startDate = formatFuzzyDate({
-    day: formData.startDate?.getDate(),
-    month: formData.startDate?.getMonth() + 1,
-    year: formData.startDate?.getFullYear(),
-  });
-
   if (finishDate !== "YYYY-MM-DD" && startDate > finishDate) {
     finishDate = startDate;
   }
 
-  let header = `# __${challenge.name}__
+  let header = `# __${challenge.name}__\n\n`;
 
-  Challenge Start Date: ${startDate}
-  Challenge Finish Date: ${finishDate}
-  Legend: [${settings.completed}] = Completed ${
-    settings.watching && `[${settings.watching}] = Watching `
-  }[${settings.notCompleted}] = Not Completed\n`;
+  header += `Challenge Start Date: ${startDate}\n`;
+  header += `Challenge Finish Date: ${finishDate}\n`;
+  header += `Legend: [${settings.completed}] = Completed `;
+  header += `${settings.watching && `[${settings.watching}] = Watching `}`;
+  header += `[${settings.notCompleted}] = Not Completed`;
+  if (showPrevCompletedLegend && settings.prevCompleted)
+    header += ` [${settings.prevCompleted}] = Previously completed`;
+
+  header += "\n";
 
   let body = `\n<hr>\n\n${result.join("\n\n").trim()}\n`;
 

@@ -9,6 +9,7 @@ export const getSettings = (): SettingsProps => {
     notCompleted: "O",
     watching: "",
     completed: "X",
+    prevCompleted: "",
     previewCards: false,
     language: { value: "romaji", label: "Romaji" },
     centerHeader: false,
@@ -22,9 +23,13 @@ export const getSettings = (): SettingsProps => {
 
 export const getEmoji = (
   settings: SettingsProps,
-  status: MediaListStatus
+  status: MediaListStatus,
+  prevCompleted: boolean
 ): string => {
-  if (status === "COMPLETED") return settings.completed;
+  if (status === "COMPLETED") {
+    if (prevCompleted && settings.prevCompleted) return settings.prevCompleted;
+    return settings.completed;
+  }
   if (status === "CURRENT" && settings.watching) return settings.watching;
   return settings.notCompleted;
 };

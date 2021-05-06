@@ -41,6 +41,7 @@ export interface Challenge {
   autoOccult?: boolean;
   run?: { after?: { type: string }[] };
   type?: "genre";
+  previouslyCompleted?: boolean;
   requirements: Requirement[];
   modes: ChallengeMode[];
 }
