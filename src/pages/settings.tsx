@@ -31,12 +31,7 @@ const HomePage: React.FC<DefaultPageProps> = ({
 
   const handleSubmit = useCallback(
     async (formData) => {
-      const data = {
-        ...formData,
-        language: formData.language,
-      };
-
-      setItemLocalStorage("@awc-generator:settings", JSON.stringify(data));
+      setItemLocalStorage("@awc-generator:settings", JSON.stringify(formData));
 
       alert.show(<Alert>Settings updated</Alert>, { type: "success" });
     },
@@ -79,6 +74,7 @@ const HomePage: React.FC<DefaultPageProps> = ({
             <Input name="notCompleted" label="Not completed" />
             <Input name="watching" label="Watching" />
             <Input name="completed" label="Completed" />
+            <Input name="prevCompleted" label="Previously completed" />
           </section>
           <h2>Layout</h2>
           <section className="layout">

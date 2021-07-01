@@ -184,7 +184,7 @@ const ChallengeComponent: React.FC<Props> = ({
                     required={challenge.defaultRequired || req.required}
                   >
                     <button
-                      name="test"
+                      name="openManualField"
                       type="button"
                       tabIndex={-1}
                       onClick={() => {
@@ -264,7 +264,6 @@ const ChallengeComponent: React.FC<Props> = ({
             rows={10}
             value={animeData}
             readOnly
-            title="search return on anilist"
           />
         </Form>
       </Container>

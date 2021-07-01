@@ -42,7 +42,8 @@ const formatAnimeInformation = async (
   fields?: string[][],
   manualField?: string,
   mode?: ChallengeMode,
-  showMode?: boolean
+  showMode?: boolean,
+  prevCompleted?: boolean
 ): Promise<string> => {
   const {
     status,
@@ -69,9 +70,11 @@ const formatAnimeInformation = async (
   if (requirement) {
     const reqId = getDigits(requirement.id, 2);
 
-    formattedAnime = `${reqId}) [${getEmoji(settings, status)}] __${
-      requirement.question
-    }__\n${formattedAnime}`;
+    formattedAnime = `${reqId}) [${getEmoji(
+      settings,
+      status,
+      prevCompleted
+    )}] __${requirement.question}__\n${formattedAnime}`;
 
     if (requirement.splitter)
       formattedAnime = `${requirement.splitter}\n${formattedAnime}`;
@@ -89,6 +92,9 @@ const formatAnimeInformation = async (
     if (additionalInformation) formattedAnime += ` // ${additionalInformation}`;
 
     if (manualField) formattedAnime += ` // ${manualField}`;
+
+    if (prevCompleted && !settings.prevCompleted)
+      formattedAnime += ` // Previously completed`;
   }
 
   return formattedAnime;

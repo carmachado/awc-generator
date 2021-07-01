@@ -40,8 +40,8 @@ export const Container = styled.div`
 
   .emojis {
     display: grid;
-    grid-template-columns: 33% 34% 33%;
-    grid-template-rows: 50% 50%;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 25% 25% 25% 25%;
     align-items: center;
     grid-auto-flow: column;
   }
