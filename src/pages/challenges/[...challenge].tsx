@@ -174,12 +174,18 @@ const ChallengeComponent: React.FC<Props> = ({
                 <AnimeDiv role="toolbar">
                   <Input
                     name="URL"
-                    label={`${getDigits(req.id, 2)}) ${getRequirementDescripton(
-                      req
-                    )}`}
+                    label={`${
+                      !req.customFormat || req.customFormat.includes("{id}")
+                        ? `${getDigits(req.id, 2)}) `
+                        : ""
+                    }${getRequirementDescripton(req)}`}
                     placeholder="Anime URL"
                     underDiv="children"
-                    required={challenge.defaultRequired || req.required}
+                    required={
+                      req.required === undefined
+                        ? challenge.defaultRequired
+                        : req.required
+                    }
                   >
                     <button
                       name="openManualField"
