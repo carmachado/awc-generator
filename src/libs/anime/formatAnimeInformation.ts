@@ -4,6 +4,7 @@ import { SettingsProps } from "../settings/settingsType";
 import { runAdditionalInformation } from "./additionalInformation/runAdditionalInformation";
 import { getEmoji, getSettings } from "../utils/getLocalInformation";
 import formatFuzzyDate, { getDigits } from "../utils/formatFuzzyDate";
+import replaceVars from "../utils/replaceVars";
 
 const formatAdditionalInformation = async (
   info: MediaList,
@@ -54,33 +55,31 @@ const formatAnimeInformation = async (
 
   const settings = getSettings();
 
-  let formattedAnime = "";
-
-  const formattedTitle = getTitle(title, settings);
-
-  if (settings.previewCards) {
-    formattedAnime += `https://anilist.co/anime/${id}`;
-  } else {
-    formattedAnime += `[${formattedTitle}](https://anilist.co/anime/${id})`;
-  }
-
-  formattedAnime += `\nStart: ${formatFuzzyDate(startedAt)}`;
-  formattedAnime += ` Finish: ${formatFuzzyDate(completedAt)}`;
+  const formatted = {
+    anime: getTitle(id, title, settings),
+    start: formatFuzzyDate(startedAt),
+    finish: formatFuzzyDate(completedAt),
+    id: "",
+    emoji: "",
+    question: "",
+    additionalInformation: "",
+    header: "",
+    format: "{anime}\nStart: {start} Finish: {finish}",
+  };
 
   if (requirement) {
-    const reqId = getDigits(requirement.id, 2);
+    if (requirement.customFormat) formatted.format = requirement.customFormat;
+    else
+      formatted.format =
+        "{id}) [{emoji}] __{question}__\n{anime}\nStart: {start} Finish: {finish}";
 
-    formattedAnime = `${reqId}) [${getEmoji(
-      settings,
-      status,
-      prevCompleted
-    )}] __${requirement.question}__\n${formattedAnime}`;
+    if (requirement.splitter) formatted.header += `${requirement.splitter}\n`;
 
-    if (requirement.splitter)
-      formattedAnime = `${requirement.splitter}\n${formattedAnime}`;
+    if (showMode) formatted.header += `__Mode: ${mode?.label}__\n\n`;
 
-    if (showMode)
-      formattedAnime = `__Mode: ${mode?.label}__\n\n${formattedAnime}`;
+    formatted.id = getDigits(requirement.id, 2);
+    formatted.emoji = getEmoji(settings, status, prevCompleted);
+    formatted.question = requirement.question;
 
     const additionalInformation = await formatAdditionalInformation(
       information,
@@ -89,15 +88,20 @@ const formatAnimeInformation = async (
       fields
     );
 
-    if (additionalInformation) formattedAnime += ` // ${additionalInformation}`;
+    if (additionalInformation)
+      formatted.additionalInformation += ` // ${additionalInformation}`;
 
-    if (manualField) formattedAnime += ` // ${manualField}`;
+    if (manualField) formatted.additionalInformation += ` // ${manualField}`;
 
     if (prevCompleted && !settings.prevCompleted)
-      formattedAnime += ` // Previously completed`;
+      formatted.additionalInformation += ` // Previously completed`;
   }
 
-  return formattedAnime;
+  return (
+    formatted.header +
+    (await replaceVars(formatted, formatted.format)) +
+    formatted.additionalInformation
+  );
 };
 
 export default formatAnimeInformation;

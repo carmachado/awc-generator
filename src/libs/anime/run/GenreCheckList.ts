@@ -86,11 +86,7 @@ const GenreCheckList: RunFunction = async ({
       );
       result += `\n[${emoji}] ${genre}: #${getDigits(anime.reqId, 2)}${
         anime.reqId
-      }\n${getAnimeTitle(
-        settings,
-        getTitle(anime.media.title, settings),
-        anime.media.id
-      )}\n`;
+      }\n${getTitle(anime.media.id, anime.media.title, settings)}\n`;
     } else {
       result += `\n[O] ${genre}: #00\n${getAnimeTitle(
         settings,

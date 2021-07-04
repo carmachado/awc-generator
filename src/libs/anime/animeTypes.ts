@@ -28,6 +28,7 @@ export interface Requirement {
   required?: boolean;
   preset?: string;
   type?: "bonus";
+  customFormat: string;
 }
 
 export interface ChallengeMode extends SelectOption {
@@ -99,8 +100,13 @@ export const getField = ({
 };
 
 export const getTitle = (
+  id: number,
   title: MediaTitle,
   settings: SettingsProps
 ): string => {
-  return title[settings.language.value] || title.romaji;
+  const formattedTitle = title[settings.language.value] || title.romaji;
+
+  return settings.previewCards
+    ? `https://anilist.co/anime/${id}`
+    : `[${formattedTitle}](https://anilist.co/anime/${id})`;
 };
